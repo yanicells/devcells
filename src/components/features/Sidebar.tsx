@@ -66,10 +66,10 @@ export function Sidebar() {
     }
 
     const groupId = mainMap[activeId]
-    if (groupId && groupId !== expandedGroup) {
+    if (groupId) {
       setExpandedGroup(groupId)
     }
-  }, [activeId, expandedGroup, isMisc])
+  }, [activeId, isMisc])
 
   useEffect(() => {
     if (!isMisc && expandedGroup === 'misc') {

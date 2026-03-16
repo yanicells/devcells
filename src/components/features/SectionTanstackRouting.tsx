@@ -123,19 +123,19 @@ const projectTree: TreeNodeType[] = [
 
 export function SectionTanstackRouting() {
   return (
-    <section id="tanstack-routing" className="scroll-mt-24 mb-16">
-      <h2 className="text-2xl font-bold tracking-tight mb-6 pb-2 border-b border-[#e5e5e5]">
-        3. TanStack Start Routing
+    <section id="tanstack-routing" className="scroll-mt-24 mb-16 docs-section">
+      <h2 className="section-title">
+        4. TanStack Start Routing
       </h2>
 
       <div className="space-y-12">
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="tanstack-file-structure" className="scroll-mt-24">
+          <h3 className="pattern-title">
             File-Based Routing
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Routes are automatically generated from files inside the{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               app/routes/
             </code>{' '}
             directory.
@@ -143,50 +143,50 @@ export function SectionTanstackRouting() {
           <FileTree data={appRoutesTree} />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article className="scroll-mt-24">
+          <h3 className="pattern-title">
             Project Structure
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Opinionated conventions outside of the routes directory.
           </p>
           <FileTree data={projectTree} />
 
-          <ul className="mt-6 space-y-3 text-sm text-[#888]">
+          <ul className="mt-6 space-y-3 text-sm text-(--text-muted)">
             <li>
-              <strong className="text-black">server/queries/</strong> — Pure
+              <strong className="text-(--text-primary)">server/queries/</strong> — Pure
               async functions that call the DB directly. Only called inside
               route{' '}
-              <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+              <code className="inline-code">
                 loader
               </code>
               s or{' '}
-              <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+              <code className="inline-code">
                 createServerFn
               </code>
               . Never imported in client components.
             </li>
             <li>
-              <strong className="text-black">server/actions/</strong> —{' '}
-              <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+              <strong className="text-(--text-primary)">server/actions/</strong> —{' '}
+              <code className="inline-code">
                 createServerFn()
               </code>{' '}
               mutations. Write operations only. Can be called from client
               components.
             </li>
             <li>
-              <strong className="text-black">components/ui/</strong> — Zero data
+              <strong className="text-(--text-primary)">components/ui/</strong> — Zero data
               fetching, zero server imports. Pure presentational primitives.
               Accept all data via props.
             </li>
             <li>
-              <strong className="text-black">components/features/</strong> — Own
+              <strong className="text-(--text-primary)">components/features/</strong> — Own
               a domain concept. Can fetch data via{' '}
-              <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+              <code className="inline-code">
                 useQuery
               </code>{' '}
               on the client or receive loader data via{' '}
-              <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+              <code className="inline-code">
                 useLoaderData
               </code>
               .
@@ -195,48 +195,48 @@ export function SectionTanstackRouting() {
         </article>
 
         <article className="space-y-8">
-          <div>
-            <h4 className="text-md font-bold mb-2">1. createFileRoute</h4>
+          <div id="tanstack-create-file-route" className="scroll-mt-24">
+            <h4 className="pattern-title">1. createFileRoute</h4>
             <CodeBlock
               code={`import { createFileRoute } from '@tanstack/react-router'\n\nexport const Route = createFileRoute('/about')({\n  component: () => <div>About Page</div>\n})`}
               lang="tsx"
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">2. Loaders</h4>
+          <div id="tanstack-loaders" className="scroll-mt-24">
+            <h4 className="pattern-title">2. Loaders</h4>
             <CodeBlock
               code={`import { createFileRoute } from '@tanstack/react-router'\nimport { getPosts } from '~/server/queries/posts'\n\nexport const Route = createFileRoute('/blog/')({\n  loader: async ({ request }) => {\n    const posts = await getPosts()\n    return { posts }\n  },\n  component: function BlogRoute() {\n    const { posts } = Route.useLoaderData()\n    return <div>{posts.length} posts</div>\n  }\n})`}
               lang="tsx"
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">3. Dynamic Params</h4>
+          <div id="tanstack-dynamic-params" className="scroll-mt-24">
+            <h4 className="pattern-title">3. Dynamic Params</h4>
             <CodeBlock
               code={`export const Route = createFileRoute('/blog/$slug')({\n  loader: async ({ params }) => {\n    return await getPostBySlug(params.slug)\n  },\n  component: function BlogPost() {\n    const params = Route.useParams()\n    return <div>Slug: {params.slug}</div>\n  }\n})`}
               lang="tsx"
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">4. Search Params</h4>
+          <div id="tanstack-search-params" className="scroll-mt-24">
+            <h4 className="pattern-title">4. Search Params</h4>
             <CodeBlock
               code={`import { z } from 'zod'\n\nconst searchSchema = z.object({\n  page: z.number().catch(1),\n  sortBy: z.enum(['asc', 'desc']).catch('desc')\n})\n\nexport const Route = createFileRoute('/search')({\n  validateSearch: searchSchema,\n  component: function Search() {\n    const { page, sortBy } = Route.useSearch()\n    return (\n      <Link to="/search" search={{ page: page + 1, sortBy }}>Next</Link>\n    )\n  }\n})`}
               lang="tsx"
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">5. createServerFn</h4>
+          <div id="tanstack-create-server-fn" className="scroll-mt-24">
+            <h4 className="pattern-title">5. createServerFn</h4>
             <CodeBlock
               code={`import { createServerFn } from '@tanstack/start'\n\nconst updateUser = createServerFn({ method: 'POST' })\n  .validator((d: { id: string; name: string }) => d)\n  .handler(async ({ data }) => {\n    await db.user.update(data)\n    return { success: true }\n  })\n\n// In a component:\n<button onClick={() => updateUser({ data: { id: '1', name: 'Al' } })}>\n  Update\n</button>`}
               lang="tsx"
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">
+          <div id="tanstack-layouts-nested" className="scroll-mt-24">
+            <h4 className="pattern-title">
               6. Layouts and nested routes
             </h4>
             <CodeBlock
@@ -245,8 +245,8 @@ export function SectionTanstackRouting() {
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">
+          <div id="tanstack-pending-states" className="scroll-mt-24">
+            <h4 className="pattern-title">
               7. Pending / Loading states
             </h4>
             <CodeBlock
@@ -255,24 +255,24 @@ export function SectionTanstackRouting() {
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">8. Head / Metadata</h4>
+          <div id="tanstack-head-metadata" className="scroll-mt-24">
+            <h4 className="pattern-title">8. Head / Metadata</h4>
             <CodeBlock
               code={`export const Route = createFileRoute('/post/$id')({\n  head: ({ loaderData }) => ({\n    meta: [\n      { title: \`Post | \${loaderData?.title || ''}\` },\n      { name: 'description', content: loaderData?.excerpt }\n    ]\n  })\n})`}
               lang="tsx"
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">9. Middleware</h4>
+          <div id="tanstack-middleware" className="scroll-mt-24">
+            <h4 className="pattern-title">9. Middleware</h4>
             <CodeBlock
               code={`import { createMiddleware } from '@tanstack/start'\n\nexport const authMiddleware = createMiddleware()\n  .server(async ({ next }) => {\n    const session = await getSession()\n    if (!session) throw redirect({ to: '/login' })\n    return next({ context: { user: session.user } })\n  })\n\nexport const Route = createFileRoute('/dashboard')({\n  beforeLoad: async ({ context }) => {\n    await authMiddleware()\n  }\n})`}
               lang="tsx"
             />
           </div>
 
-          <div>
-            <h4 className="text-md font-bold mb-2">
+          <div id="tanstack-query-loader-hybrid" className="scroll-mt-24">
+            <h4 className="pattern-title">
               10. TanStack Query + Loaders hybrid
             </h4>
             <CodeBlock

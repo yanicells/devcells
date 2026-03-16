@@ -25,14 +25,14 @@ export function CodeBlock({
     async function highlight() {
       if (!highlighterPromise) {
         highlighterPromise = createHighlighter({
-          themes: ['github-dark'],
+          themes: ['github-dark-dimmed'],
           langs: ['tsx', 'typescript', 'javascript', 'bash', 'json', 'css'],
         })
       }
       const highlighter = await highlighterPromise
       const result = highlighter.codeToHtml(code.trim(), {
         lang,
-        theme: 'github-dark',
+        theme: 'github-dark-dimmed',
       })
 
       if (isMounted) {
@@ -55,16 +55,16 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        'relative mt-4 mb-6 rounded-lg overflow-hidden border border-gray-200 bg-[#0d1117] text-sm font-mono',
+        'relative mt-4 mb-6 rounded-md overflow-hidden border border-(--border) bg-(--code-bg) text-sm font-mono',
         className,
       )}
     >
       {(filename || lang) && (
-        <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-gray-800 text-gray-400 text-xs">
+        <div className="flex items-center justify-between px-4 py-2 border-b border-(--border) text-(--text-faint) text-[11px] tracking-[0.1em] uppercase">
           <span>{filename || lang}</span>
           <button
             onClick={copy}
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className="transition-colors flex items-center gap-1.5 hover:text-(--text-primary)"
             aria-label="Copy code"
           >
             {copied ? (
@@ -108,10 +108,10 @@ export function CodeBlock({
         {html ? (
           <div
             dangerouslySetInnerHTML={{ __html: html }}
-            className="[&>pre]:!bg-transparent [&>pre]:!p-0"
+            className="[&_.line]:text-(--code-text) [&_.token.comment]:text-(--text-muted) [&_.token.punctuation]:text-(--text-muted) [&_.token.keyword]:text-(--text-primary) [&_.token.function]:text-(--code-text) [&_.token.string]:text-(--code-text) [&>pre]:!bg-transparent [&>pre]:!p-0"
           />
         ) : (
-          <pre className="text-gray-400 animate-pulse bg-transparent p-0">
+          <pre className="text-(--text-muted) animate-pulse bg-transparent p-0">
             {code.trim()}
           </pre>
         )}

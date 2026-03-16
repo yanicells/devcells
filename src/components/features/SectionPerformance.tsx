@@ -3,12 +3,12 @@ import { Gotcha } from '../ui/Gotcha'
 
 function CachingFlow() {
   return (
-    <div className="border border-[#e5e5e5] rounded-lg p-6 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-x-auto my-6 bg-white [background-image:radial-gradient(#e5e5e5_1px,transparent_0)] [background-size:16px_16px]">
+    <div className="border border-(--border) p-6 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-x-auto my-6 bg-(--surface)">
       <svg
         width="100%"
         height="80"
         viewBox="0 0 600 80"
-        className="min-w-[500px] text-black fill-none stroke-current"
+        className="min-w-[500px] fill-none stroke-current text-(--text-primary)"
         strokeWidth="1.5"
       >
         <rect
@@ -17,15 +17,15 @@ function CachingFlow() {
           width="120"
           height="40"
           rx="4"
-          className="stroke-black stroke-2"
-          fill="white"
+          className="stroke-(--border) stroke-2"
+          fill="none"
         />
         <text
           x="70"
           y="44"
           className="text-xs font-mono font-bold"
           stroke="none"
-          fill="black"
+          fill="var(--text-primary)"
           textAnchor="middle"
         >
           Loader Prefetch
@@ -39,15 +39,15 @@ function CachingFlow() {
           width="120"
           height="40"
           rx="4"
-          className="stroke-black stroke-2"
-          fill="white"
+          className="stroke-(--border) stroke-2"
+          fill="none"
         />
         <text
           x="260"
           y="44"
           className="text-xs font-mono font-bold"
           stroke="none"
-          fill="black"
+          fill="var(--text-primary)"
           textAnchor="middle"
         >
           Router Cache
@@ -61,15 +61,15 @@ function CachingFlow() {
           width="120"
           height="40"
           rx="4"
-          className="stroke-black stroke-2"
-          fill="white"
+          className="stroke-(--border) stroke-2"
+          fill="none"
         />
         <text
           x="450"
           y="44"
           className="text-xs font-mono font-bold"
           stroke="none"
-          fill="black"
+          fill="var(--text-primary)"
           textAnchor="middle"
         >
           Query Cache
@@ -81,15 +81,15 @@ function CachingFlow() {
           cx="580"
           cy="40"
           r="20"
-          className="stroke-black stroke-2"
-          fill="white"
+          className="stroke-(--border) stroke-2"
+          fill="none"
         />
         <text
           x="580"
           y="44"
           className="text-xs font-mono font-bold"
           stroke="none"
-          fill="black"
+          fill="var(--text-primary)"
           textAnchor="middle"
         >
           UI
@@ -107,7 +107,7 @@ function CachingFlow() {
           >
             <path
               d="M 0 0 L 10 5 L 0 10 z"
-              className="fill-black stroke-none"
+              className="fill-(--text-primary) stroke-none"
             />
           </marker>
         </defs>
@@ -118,17 +118,17 @@ function CachingFlow() {
 
 export function SectionPerformance() {
   return (
-    <section id="performance" className="scroll-mt-24 mb-16">
-      <h2 className="text-2xl font-bold tracking-tight mb-6 pb-2 border-b border-[#e5e5e5]">
-        6. Performance
+    <section id="performance" className="scroll-mt-24 mb-16 docs-section">
+      <h2 className="section-title">
+        7. Performance
       </h2>
 
       <div className="space-y-12">
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="perf-react-memo" className="scroll-mt-24">
+          <h3 className="pattern-title">
             React.memo
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Skip re-rendering when props don't change.
           </p>
           <CodeBlock
@@ -141,18 +141,18 @@ export function SectionPerformance() {
           <Gotcha>
             If the component consumes a Context, it will still re-render when
             the context changes, bypassing{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+            <code className="inline-code">
               React.memo
             </code>
             .
           </Gotcha>
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="perf-lazy-suspense" className="scroll-mt-24">
+          <h3 className="pattern-title">
             lazy() + Suspense
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Code splitting for heavy components.
           </p>
           <CodeBlock
@@ -171,11 +171,11 @@ function Dashboard() {
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="perf-start-transition" className="scroll-mt-24">
+          <h3 className="pattern-title">
             startTransition
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Keep UI responsive by marking updates as non-urgent.
           </p>
           <CodeBlock
@@ -195,11 +195,11 @@ function handleChange(e) {
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="perf-use-optimistic" className="scroll-mt-24">
+          <h3 className="pattern-title">
             useOptimistic
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Instant UI feedback before a server mutation completes.
           </p>
           <CodeBlock
@@ -222,11 +222,38 @@ function LikeButton({ initialLikes, likeAction }) {
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="perf-use-deferred" className="scroll-mt-24">
+          <h3 className="pattern-title">
+            useDeferredValue
+          </h3>
+          <p className="section-note">
+            Keep typing responsive while rendering an expensive filtered list.
+          </p>
+          <CodeBlock
+            code={`const [query, setQuery] = useState('')
+const deferredQuery = useDeferredValue(query)
+
+const visible = useMemo(
+  () => hugeList.filter((item) => item.name.includes(deferredQuery)),
+  [deferredQuery],
+)
+
+return (
+  <>
+    <input value={query} onChange={(e) => setQuery(e.target.value)} />
+    <p>Filtering: {deferredQuery}</p>
+    <ResultList items={visible} />
+  </>
+)`}
+            lang="tsx"
+          />
+        </article>
+
+        <article id="perf-virtualization" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Virtualization
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Render only the visible items in a long list.
           </p>
           <CodeBlock
@@ -257,13 +284,13 @@ return (
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="perf-image-optimization" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Image Optimization
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Vite / TanStack Start lacks built-in{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+            <code className="inline-code">
               next/image
             </code>
             . Use native lazy loading and explicit sizing to avoid CLS.
@@ -281,37 +308,37 @@ return (
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="perf-caching-overview" className="scroll-mt-24">
+          <h3 className="pattern-title">
             TanStack Start Caching Overview
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             How prefetching, routing cache, and query caches interact.
           </p>
           <CachingFlow />
-          <ul className="text-sm text-[#888] list-disc pl-5 mt-4 space-y-2">
+          <ul className="text-sm text-(--text-muted) list-disc pl-5 mt-4 space-y-2">
             <li>
-              <strong className="text-black">Loader Prefetch:</strong> Router
+              <strong className="text-(--text-primary)">Loader Prefetch:</strong> Router
               calls loader, which runs{' '}
-              <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+              <code className="inline-code">
                 ensureQueryData
               </code>
               .
             </li>
             <li>
-              <strong className="text-black">Router Cache:</strong> Reusesloader
+              <strong className="text-(--text-primary)">Router Cache:</strong> Reuses loader
               output for a configurable duration.
             </li>
             <li>
-              <strong className="text-black">Query Cache:</strong> React Query
+              <strong className="text-(--text-primary)">Query Cache:</strong> React Query
               holds data globally and deduplicates requests.{' '}
-              <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+              <code className="inline-code">
                 staleTime
               </code>{' '}
               controls refetches.
             </li>
             <li>
-              <strong className="text-black">UI:</strong> Component hydrates
+              <strong className="text-(--text-primary)">UI:</strong> Component hydrates
               efficiently.
             </li>
           </ul>

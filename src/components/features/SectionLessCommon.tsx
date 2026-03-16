@@ -2,19 +2,19 @@ import { CodeBlock } from '../ui/CodeBlock'
 
 export function SectionLessCommon() {
   return (
-    <section id="less-common" className="scroll-mt-24 mb-16">
-      <h2 className="text-2xl font-bold tracking-tight mb-6 pb-2 border-b border-[#e5e5e5]">
-        7. Less Common but Good to Know
+    <section id="less-common" className="scroll-mt-24 mb-16 docs-section">
+      <h2 className="section-title">
+        8. Less Common but Good to Know
       </h2>
 
       <div className="space-y-12">
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="less-error-boundaries" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Error Boundaries
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             React has no functional equivalent to error boundaries. Use{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               react-error-boundary
             </code>
             .
@@ -39,18 +39,18 @@ function Fallback({ error, resetErrorBoundary }) {
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="less-create-portal" className="scroll-mt-24">
+          <h3 className="pattern-title">
             createPortal
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Render children into a DOM node outside the parent hierarchy (e.g.,
             Modals, Tooltips) to escape parent{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+            <code className="inline-code">
               overflow: hidden
             </code>{' '}
-            or strict `
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+            or strict{' '}
+            <code className="inline-code">
               z-index
             </code>{' '}
             stacking contexts.
@@ -73,13 +73,13 @@ function Modal({ children }) {
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="less-use-layout-effect" className="scroll-mt-24">
+          <h3 className="pattern-title">
             useLayoutEffect vs useEffect
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Use{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+            <code className="inline-code">
               useLayoutEffect
             </code>{' '}
             only if you need to mutate the DOM synchronously before the browser
@@ -96,11 +96,11 @@ function Modal({ children }) {
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">
+        <article id="less-context-reducer-store" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Context + useReducer as Store
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             A lightweight alternative to Redux/Zustand.
           </p>
           <CodeBlock
@@ -132,11 +132,11 @@ dispatch({ type: 'ADD', payload: 'New Item' })`}
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-4">useId</h3>
-          <p className="text-sm text-[#888] mb-4">
+        <article id="less-use-id" className="scroll-mt-24">
+          <h3 className="pattern-title">useId</h3>
+          <p className="section-note">
             Generate unique IDs for accessible form label/input pairs. Using{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-[11px]">
+            <code className="inline-code">
               Math.random()
             </code>{' '}
             causes hydration mismatch errors.

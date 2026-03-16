@@ -3,16 +3,16 @@ import { Gotcha } from '../ui/Gotcha'
 
 export function SectionDataSideEffects() {
   return (
-    <section id="data-side-effects" className="scroll-mt-24 mb-16">
-      <h2 className="text-2xl font-bold tracking-tight mb-6 pb-2 border-b border-[#e5e5e5]">
+    <section id="data-side-effects" className="scroll-mt-24 mb-16 docs-section">
+      <h2 className="section-title">
         2. Data & Side Effects
       </h2>
       <div className="space-y-12">
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="data-use-reducer" className="scroll-mt-24">
+          <h3 className="pattern-title">
             useReducer
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             Manage complex state objects or multiple sub-values where the next
             state relies on the previous.
           </p>
@@ -44,11 +44,11 @@ function Counter() {
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="data-use-context" className="scroll-mt-24">
+          <h3 className="pattern-title">
             useContext
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             Pass data through the component tree without prop-drilling.
           </p>
           <CodeBlock
@@ -74,11 +74,11 @@ function Child() {
           </Gotcha>
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="data-tanstack-query" className="scroll-mt-24">
+          <h3 className="pattern-title">
             TanStack Query
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             The standard async state manager. Handles caching, background
             updates, and stale data.
           </p>
@@ -105,20 +105,20 @@ const mutation = useMutation({
             Forgetting `queryKey` variables (e.g., using `['users']` instead of
             `['users', id]`) causes cache collisions between different entities.
           </Gotcha>
-          <p className="text-[#888] text-sm mb-4 mt-4 leading-relaxed font-semibold">
+          <p className="section-note mt-4 leading-relaxed font-semibold">
             SWR Equivalent:
           </p>
           <CodeBlock
             code={`import useSWR from 'swr'
 const { data, mutate } = useSWR('/api/users', fetcher)
-mutate() // Invaldiating cache`}
+mutate() // Invalidating cache`}
             lang="tsx"
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">useRef</h3>
-          <p className="text-[#888] text-sm mb-4">
+        <article id="data-use-ref" className="scroll-mt-24">
+          <h3 className="pattern-title">useRef</h3>
+          <p className="section-note">
             Create DOM references or mutable values that don't trigger
             re-renders.
           </p>
@@ -140,11 +140,11 @@ renderCount.current += 1`}
           </Gotcha>
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="data-use-memo-callback" className="scroll-mt-24">
+          <h3 className="pattern-title">
             useCallback & useMemo
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             Cache functions and derived values between renders. Use only when
             calculating is expensive or passing to `React.memo` components.
           </p>
@@ -165,11 +165,11 @@ const handleSubmit = useCallback((data) => {
           </Gotcha>
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="data-custom-hooks" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Custom Hooks
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             Extract and reuse stateful logic.
           </p>
           <CodeBlock

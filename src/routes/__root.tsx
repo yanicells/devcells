@@ -33,10 +33,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="font-sans antialiased text-black bg-white">
+      <body className="font-sans antialiased text-(--text-primary) bg-(--bg) docs-main">
         <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] min-h-screen">
           <Sidebar />
-          <main className="max-w-4xl mx-auto px-6 py-12 w-full">
+          <main className="max-w-5xl mx-auto px-6 py-12 w-full">
             <Outlet />
           </main>
         </div>

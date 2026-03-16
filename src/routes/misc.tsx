@@ -7,27 +7,27 @@ export const Route = createFileRoute('/misc')({
 
 function Misc() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen docs-page">
       <header className="mb-16 mt-8">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tighter mb-4 text-black">
-          Misc Tools & Commands.
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.05em] mb-4 text-(--text-primary)">
+          Misc.
         </h1>
-        <p className="text-lg sm:text-xl text-[#888] max-w-2xl leading-relaxed">
+        <p className="text-lg sm:text-xl text-(--text-muted) max-w-2xl leading-relaxed">
           One-liners, shell commands, and miscellaneous dev patterns that are
           easy to forget but essential out in the wild.
         </p>
       </header>
 
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold tracking-tight mb-8 pb-2 border-b border-[#e5e5e5]">
+      <section id="misc-shell" className="mb-16 scroll-mt-24">
+        <h2 className="section-title">
           Shell & File System
         </h2>
 
-        <article id="wsl-zone" className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article className="scroll-mt-24 mb-12">
+          <h3 className="pattern-title">
             Delete Windows Zone.Identifier files
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Cleans up WSL filesystem junk left by Windows after copying files
             into the Linux filesystem.
           </p>
@@ -37,26 +37,26 @@ function Misc() {
           />
         </article>
 
-        <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="misc-wsl" className="scroll-mt-24 mb-12">
+          <h3 className="pattern-title">
             WSL2 Tips for Web Dev
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Keep your code in{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               ~/
             </code>{' '}
             (e.g.{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               ~/projects/
             </code>
             ), NEVER in{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               /mnt/c/
             </code>
             . Cross-OS file I/O is extremely slow and will destroy node_modules
             performance. Access Windows from WSL via{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               \\\\wsl$
             </code>
             .
@@ -64,30 +64,30 @@ function Misc() {
         </article>
       </section>
 
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold tracking-tight mb-8 pb-2 border-b border-[#e5e5e5]">
+      <section id="misc-git" className="mb-16 scroll-mt-24">
+        <h2 className="section-title">
           Git
         </h2>
 
-        <article id="git" className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article className="scroll-mt-24 mb-12">
+          <h3 className="pattern-title">
             Interactive Rebase (Squash/Fixup)
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Combine or edit the last{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               n
             </code>{' '}
             commits. Change{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               pick
             </code>{' '}
             to{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               squash
             </code>{' '}
             (or{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               s
             </code>
             ) in the editor.
@@ -104,15 +104,15 @@ s 7g8h9i Add missing prop`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+          <h3 className="pattern-title">
             Stash Pop vs. Apply
           </h3>
-          <p className="text-sm text-[#888] mb-4">
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+          <p className="section-note">
+            <code className="inline-code">
               pop
             </code>{' '}
             applies the stash and removes it from the list.{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               apply
             </code>{' '}
             applies the stash but keeps it in the list (safer if you might need
@@ -121,10 +121,10 @@ s 7g8h9i Add missing prop`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+          <h3 className="pattern-title">
             Common Full-Stack .gitignore
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             The essentials for JS/TS projects.
           </p>
           <CodeBlock
@@ -142,16 +142,16 @@ build
         </article>
       </section>
 
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold tracking-tight mb-8 pb-2 border-b border-[#e5e5e5]">
+      <section id="misc-pkg" className="mb-16 scroll-mt-24">
+        <h2 className="section-title">
           Node & Package Managers
         </h2>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+          <h3 className="pattern-title">
             npx vs pnpx vs bunx
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Use the runner matching your package manager to execute binaries.
           </p>
           <CodeBlock
@@ -168,10 +168,10 @@ bunx create-next-app@latest`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+          <h3 className="pattern-title">
             Essential package.json Scripts
           </h3>
-          <p className="text-sm text-[#888] mb-4">Common CI/CD scripts.</p>
+          <p className="section-note">Common CI/CD scripts.</p>
           <CodeBlock
             code={`"scripts": {
   "type-check": "tsc --noEmit",
@@ -184,13 +184,13 @@ bunx create-next-app@latest`}
         </article>
       </section>
 
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold tracking-tight mb-8 pb-2 border-b border-[#e5e5e5]">
+      <section id="misc-typescript" className="mb-16 scroll-mt-24">
+        <h2 className="section-title">
           TypeScript & Validation
         </h2>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+          <h3 className="pattern-title">
             satisfies vs as const vs type vs interface
           </h3>
           <CodeBlock
@@ -212,10 +212,10 @@ interface Admin extends User { level: number }`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+          <h3 className="pattern-title">
             Zod Mastery
           </h3>
-          <p className="text-sm text-[#888] mb-4">
+          <p className="section-note">
             Schema definition, extraction, and safe parsing.
           </p>
           <CodeBlock
@@ -240,19 +240,19 @@ const user = result.data`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+          <h3 className="pattern-title">
             Environment Variable Patterns
           </h3>
-          <p className="text-sm text-[#888] mb-4">
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+          <p className="section-note">
+            <code className="inline-code">
               .env
             </code>{' '}
             is the base.{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               .env.local
             </code>{' '}
             overrides it locally (and is gitignored).{' '}
-            <code className="bg-[#f5f5f5] px-1 py-0.5 rounded text-black text-xs">
+            <code className="inline-code">
               .env.production
             </code>{' '}
             is used in the build pipeline.
@@ -260,7 +260,7 @@ const user = result.data`}
         </article>
       </section>
 
-      <footer className="mt-16 pt-8 pb-16 border-t border-[#e5e5e5] text-sm text-[#888]">
+      <footer className="mt-16 pt-8 pb-16 border-t border-(--border) text-sm text-(--text-muted)">
         <p>Built as a static TanStack Start single-page app.</p>
       </footer>
     </div>

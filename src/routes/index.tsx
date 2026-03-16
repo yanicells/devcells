@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { SectionEverydayReact } from '../components/features/SectionEverydayReact'
 import { SectionDataSideEffects } from '../components/features/SectionDataSideEffects'
+import { SectionNextJs } from '../components/features/SectionNextJs'
 import { SectionTanstackRouting } from '../components/features/SectionTanstackRouting'
 import { SectionCompositionPatterns } from '../components/features/SectionCompositionPatterns'
 import { SectionTailwindV4 } from '../components/features/SectionTailwindV4'
@@ -13,20 +14,21 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen docs-page">
       <header className="mb-16 mt-8">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tighter mb-4 text-black">
-          React + TanStack Start.
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.05em] mb-4 text-(--text-primary)">
+          React. Next.js. TanStack Start.
         </h1>
-        <p className="text-lg sm:text-xl text-[#888] max-w-2xl leading-relaxed">
-          The ultimate brutally minimal cheat sheet focusing on everyday
-          patterns and the latest tools. Let typography do the heavy lifting.
+        <p className="text-lg sm:text-xl text-(--text-muted) max-w-2xl leading-relaxed">
+          Direct, copyable patterns for modern React stacks, with a permanent
+          editorial dark interface.
         </p>
       </header>
 
       <div className="flex flex-col">
         <SectionEverydayReact />
         <SectionDataSideEffects />
+        <SectionNextJs />
         <SectionTanstackRouting />
         <SectionCompositionPatterns />
         <SectionTailwindV4 />
@@ -34,7 +36,7 @@ function Index() {
         <SectionLessCommon />
       </div>
 
-      <footer className="mt-16 pt-8 pb-16 border-t border-[#e5e5e5] text-sm text-[#888]">
+      <footer className="mt-16 pt-8 pb-16 border-t border-(--border) text-sm text-(--text-muted)">
         <p>Built as a static TanStack Start single-page app.</p>
       </footer>
     </div>

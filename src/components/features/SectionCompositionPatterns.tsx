@@ -2,16 +2,16 @@ import { CodeBlock } from '../ui/CodeBlock'
 
 export function SectionCompositionPatterns() {
   return (
-    <section id="composition-patterns" className="scroll-mt-24 mb-16">
-      <h2 className="text-2xl font-bold tracking-tight mb-6 pb-2 border-b border-[#e5e5e5]">
-        4. Composition Patterns
+    <section id="composition-patterns" className="scroll-mt-24 mb-16 docs-section">
+      <h2 className="section-title">
+        5. Composition Patterns
       </h2>
       <div className="space-y-12">
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="composition-compound" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Compound Components
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             Share implicit state between components that work together.
           </p>
           <CodeBlock
@@ -62,11 +62,11 @@ Tabs.Panel = function TabsPanel({ id, children }: { id: string; children: React.
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="composition-render-props" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Render Props
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             A component that takes a function returning a React element and
             calls it to render UI.
           </p>
@@ -88,11 +88,11 @@ Tabs.Panel = function TabsPanel({ id, children }: { id: string; children: React.
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="composition-forward-ref" className="scroll-mt-24">
+          <h3 className="pattern-title">
             forwardRef + useImperativeHandle
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             Expose a custom method from a child component to its parent.
           </p>
           <CodeBlock
@@ -128,11 +128,11 @@ const ref = useRef<FancyInputRef>(null)
           />
         </article>
 
-        <article>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">
+        <article id="composition-polymorphic" className="scroll-mt-24">
+          <h3 className="pattern-title">
             Polymorphic "as" prop
           </h3>
-          <p className="text-[#888] text-sm mb-4">
+          <p className="section-note">
             A component that can render as any HTML element while preserving
             valid HTML attributes for that element.
           </p>

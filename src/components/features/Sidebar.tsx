@@ -1,53 +1,95 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
+import {
+  mainNavGroups,
+  miscSections,
+  sectionGroupMap,
+} from '../../lib/docsNav'
 
-const sections = [
-  { id: 'everyday-react', title: 'Everyday React' },
-  { id: 'data-side-effects', title: 'Data & Side Effects' },
-  { id: 'tanstack-routing', title: 'TanStack Start Routing' },
-  { id: 'composition-patterns', title: 'Composition Patterns' },
-  { id: 'tailwind-v4', title: 'Tailwind CSS v4' },
-  { id: 'performance', title: 'Performance' },
-  { id: 'less-common', title: 'Less Common' },
-]
+const mainMap = sectionGroupMap(mainNavGroups)
+
+function hrefFor(pathname: string, id: string) {
+  return `${pathname === '/misc' ? '/misc' : '/'}#${id}`
+}
 
 export function Sidebar() {
   const [activeId, setActiveId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [expandedGroup, setExpandedGroup] = useState('react')
   const location = useLocation()
+  const isMisc = location.pathname === '/misc'
 
   useEffect(() => {
-    if (location.pathname !== '/') {
+    const ids = isMisc
+      ? miscSections.map((s) => s.id)
+      : mainNavGroups.flatMap((g) => [
+          ...(g.sections?.map((s) => s.id) ?? []),
+          ...(g.sections?.flatMap((s) => s.patterns?.map((p) => p.id) ?? []) ??
+            []),
+        ])
+
+    if (!ids.length) {
       setActiveId('')
       return
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
-          }
-        })
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+
+        if (visible[0]) {
+          setActiveId(visible[0].target.id)
+        }
       },
-      { rootMargin: '-20% 0px -80% 0px' },
+      {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: [0.1, 0.3, 0.6],
+      },
     )
 
     setTimeout(() => {
-      sections.forEach((s) => {
-        const el = document.getElementById(s.id)
+      ids.forEach((id) => {
+        const el = document.getElementById(id)
         if (el) observer.observe(el)
       })
     }, 100)
 
     return () => observer.disconnect()
-  }, [location.pathname])
+  }, [isMisc])
+
+  useEffect(() => {
+    if (isMisc) {
+      setExpandedGroup('misc')
+      return
+    }
+
+    if (!activeId) {
+      return
+    }
+
+    const groupId = mainMap[activeId]
+    if (groupId && groupId !== expandedGroup) {
+      setExpandedGroup(groupId)
+    }
+  }, [activeId, expandedGroup, isMisc])
+
+  useEffect(() => {
+    if (!isMisc && expandedGroup === 'misc') {
+      setExpandedGroup('react')
+    }
+  }, [expandedGroup, isMisc])
+
+  const handleGroupToggle = (id: string) => {
+    setExpandedGroup((prev) => (prev === id ? '' : id))
+  }
 
   return (
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-white border border-[#e5e5e5] rounded-md shadow-sm"
+        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-(--surface) border border-(--border) text-(--text-primary)"
         aria-label="Open Menu"
       >
         <svg
@@ -68,20 +110,23 @@ export function Sidebar() {
 
       {isOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          className="md:hidden fixed inset-0 bg-black/70 z-40"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       <aside
-        className={`fixed md:sticky top-0 left-0 h-screen w-64 bg-white border-r border-[#e5e5e5] p-6 flex flex-col gap-8 overflow-y-auto z-50 transition-transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
+        className={`fixed md:sticky top-0 left-0 h-screen w-72 bg-(--surface) border-r border-(--border) p-4 flex flex-col gap-4 overflow-y-auto z-50 transition-transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
       >
-        <div className="flex items-center justify-between">
-          <div className="font-bold text-lg tracking-tight flex items-center gap-2">
-            <div className="w-4 h-4 bg-black rounded-sm" />
+        <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">
+          <div className="font-bold text-lg tracking-tight flex items-center gap-2 text-(--text-primary)">
+            <div className="w-4 h-4 border border-(--accent)" />
             Cheat Sheet
           </div>
-          <button onClick={() => setIsOpen(false)} className="md:hidden">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="md:hidden text-(--text-muted) hover:text-(--text-primary)"
+          >
             <svg
               width="20"
               height="20"
@@ -99,43 +144,140 @@ export function Sidebar() {
         </div>
 
         <nav className="flex flex-col gap-1.5 flex-1">
-          <div className="text-xs font-semibold text-[#888] tracking-wider mb-2 mt-2">
-            Sections
-          </div>
-          {sections.map((s) => (
-            <a
-              key={s.id}
-              href={`/#${s.id}`}
+          {!isMisc &&
+            mainNavGroups.map((group) => {
+              const open = expandedGroup === group.id
+
+              return (
+                <div
+                  key={group.id}
+                  className="border-b border-(--border-subtle) pb-2"
+                >
+                  <button
+                    type="button"
+                    className="w-full flex items-center justify-between px-2 py-2 text-xs tracking-[0.14em] uppercase text-(--text-muted) hover:bg-(--surface-raised) transition-colors"
+                    onClick={() => handleGroupToggle(group.id)}
+                    aria-expanded={open}
+                  >
+                    <span>{group.title}</span>
+                    <span className="text-[10px]">{open ? '-' : '+'}</span>
+                  </button>
+
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity] duration-200 ${open ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
+                  >
+                    {(group.sections ?? []).map((section) => {
+                      const isSectionActive = activeId === section.id
+                      return (
+                        <div key={section.id} className="mt-1">
+                          <a
+                            href={hrefFor(location.pathname, section.id)}
+                            onClick={() => setIsOpen(false)}
+                            className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
+                              isSectionActive
+                                ? 'border-(--accent) text-(--text-primary)'
+                                : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
+                            }`}
+                          >
+                            {section.title}
+                          </a>
+                          {(section.patterns?.length ?? 0) > 0 && (
+                            <div className="ml-3 border-l border-(--border-subtle)">
+                              {section.patterns?.map((pattern) => {
+                                const isPatternActive = activeId === pattern.id
+
+                                return (
+                                  <a
+                                    key={pattern.id}
+                                    href={hrefFor(location.pathname, pattern.id)}
+                                    onClick={() => setIsOpen(false)}
+                                    className={`block px-2 py-1 text-xs tracking-[0.08em] uppercase border-l-2 transition-colors ${
+                                      isPatternActive
+                                        ? 'border-(--accent) text-(--text-primary)'
+                                        : 'border-transparent text-(--text-faint) hover:bg-(--surface-raised) hover:text-(--text-muted)'
+                                    }`}
+                                  >
+                                    {pattern.title}
+                                  </a>
+                                )
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })}
+
+          {isMisc && (
+            <div className="border-b border-(--border-subtle) pb-2">
+              <button
+                type="button"
+                className="w-full flex items-center justify-between px-2 py-2 text-xs tracking-[0.14em] uppercase text-(--text-muted)"
+                onClick={() => handleGroupToggle('misc')}
+                aria-expanded={expandedGroup === 'misc'}
+              >
+                <span>Misc</span>
+                <span className="text-[10px]">
+                  {expandedGroup === 'misc' ? '-' : '+'}
+                </span>
+              </button>
+
+              <div
+                className={`overflow-hidden transition-[max-height,opacity] duration-200 ${expandedGroup === 'misc' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
+              >
+                {miscSections.map((item) => {
+                  const isActive = activeId === item.id
+                  return (
+                    <a
+                      key={item.id}
+                      href={`/misc#${item.id}`}
+                      onClick={() => setIsOpen(false)}
+                      className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
+                        isActive
+                          ? 'border-(--accent) text-(--text-primary)'
+                          : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
+                      }`}
+                    >
+                      {item.title}
+                    </a>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-4 border-t border-(--border-subtle) pt-3">
+            <Link
+              to="/"
               onClick={() => setIsOpen(false)}
-              className={`text-sm px-3 py-1.5 rounded-md -mx-3 transition-colors ${
-                activeId === s.id && location.pathname === '/'
-                  ? 'font-medium bg-[#f5f5f5] text-black'
-                  : 'text-[#888] hover:text-black hover:bg-[#f5f5f5]'
+              className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
+                location.pathname === '/'
+                  ? 'border-(--accent) text-(--text-primary)'
+                  : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
               }`}
             >
-              {s.title}
-            </a>
-          ))}
-
-          <div className="text-xs font-semibold text-[#888] tracking-wider mt-8 mb-2">
-            Pages
+              Main Cheat Sheet
+            </Link>
+            <Link
+              to="/misc"
+              onClick={() => setIsOpen(false)}
+              className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
+                location.pathname === '/misc'
+                  ? 'border-(--accent) text-(--text-primary)'
+                  : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
+              }`}
+            >
+              Misc
+            </Link>
           </div>
-          <Link
-            to="/misc"
-            onClick={() => setIsOpen(false)}
-            className={`text-sm px-3 py-1.5 rounded-md -mx-3 transition-colors ${
-              location.pathname === '/misc'
-                ? 'font-medium bg-[#f5f5f5] text-black'
-                : 'text-[#888] hover:text-black hover:bg-[#f5f5f5]'
-            }`}
-          >
-            Misc Tools
-          </Link>
         </nav>
 
-        <div className="text-xs text-[#888] border-t border-[#e5e5e5] pt-4 mt-auto">
+        <div className="text-xs text-(--text-faint) border-t border-(--border-subtle) pt-3 mt-auto">
           Press{' '}
-          <kbd className="font-mono bg-[#f5f5f5] px-1 rounded border border-[#e5e5e5]">
+          <kbd className="font-mono bg-(--surface-raised) px-1 border border-(--border)">
             ⌘K
           </kbd>{' '}
           to search

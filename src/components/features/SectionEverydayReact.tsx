@@ -4,14 +4,10 @@ import { Gotcha } from '../ui/Gotcha'
 export function SectionEverydayReact() {
   return (
     <section id="everyday-react" className="scroll-mt-24 mb-16 docs-section">
-      <h2 className="section-title">
-        1. Everyday React
-      </h2>
+      <h2 className="section-title">1. Everyday React</h2>
       <div className="space-y-12">
         <article id="react-use-state" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            useState
-          </h3>
+          <h3 className="pattern-title">useState</h3>
           <p className="section-note">
             Use for standard local component state that triggers a re-render.
           </p>
@@ -29,9 +25,7 @@ const increment = () => setCount((prev) => prev + 1)`}
         </article>
 
         <article id="react-use-effect" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            useEffect
-          </h3>
+          <h3 className="pattern-title">useEffect</h3>
           <p className="section-note">
             Synchronize your component with external systems (network, DOM,
             subscriptions).
@@ -51,12 +45,8 @@ const increment = () => setCount((prev) => prev + 1)`}
         </article>
 
         <article id="react-props-events" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Props & Events
-          </h3>
-          <p className="section-note">
-            Pass data down and emit events up.
-          </p>
+          <h3 className="pattern-title">Props & Events</h3>
+          <p className="section-note">Pass data down and emit events up.</p>
           <CodeBlock
             code={`interface ButtonProps {
   label: string
@@ -71,9 +61,7 @@ function Button({ label, onClick }: ButtonProps) {
         </article>
 
         <article id="react-controlled-inputs" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Controlled Inputs
-          </h3>
+          <h3 className="pattern-title">Controlled Inputs</h3>
           <p className="section-note">
             Drive form inputs solely by React state, making React the single
             source of truth.
@@ -95,9 +83,7 @@ return (
         </article>
 
         <article id="react-conditional-rendering" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Conditional Rendering
-          </h3>
+          <h3 className="pattern-title">Conditional Rendering</h3>
           <p className="section-note">Show UI based on logic.</p>
           <CodeBlock
             code={`return (
@@ -115,9 +101,7 @@ return (
         </article>
 
         <article id="react-list-rendering" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            List Rendering
-          </h3>
+          <h3 className="pattern-title">List Rendering</h3>
           <p className="section-note">
             Render multiples of a component from an array.
           </p>

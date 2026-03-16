@@ -2,15 +2,14 @@ import { CodeBlock } from '../ui/CodeBlock'
 
 export function SectionCompositionPatterns() {
   return (
-    <section id="composition-patterns" className="scroll-mt-24 mb-16 docs-section">
-      <h2 className="section-title">
-        5. Composition Patterns
-      </h2>
+    <section
+      id="composition-patterns"
+      className="scroll-mt-24 mb-16 docs-section"
+    >
+      <h2 className="section-title">5. Composition Patterns</h2>
       <div className="space-y-12">
         <article id="composition-compound" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Compound Components
-          </h3>
+          <h3 className="pattern-title">Compound Components</h3>
           <p className="section-note">
             Share implicit state between components that work together.
           </p>
@@ -63,9 +62,7 @@ Tabs.Panel = function TabsPanel({ id, children }: { id: string; children: React.
         </article>
 
         <article id="composition-render-props" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Render Props
-          </h3>
+          <h3 className="pattern-title">Render Props</h3>
           <p className="section-note">
             A component that takes a function returning a React element and
             calls it to render UI.
@@ -89,9 +86,7 @@ Tabs.Panel = function TabsPanel({ id, children }: { id: string; children: React.
         </article>
 
         <article id="composition-forward-ref" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            forwardRef + useImperativeHandle
-          </h3>
+          <h3 className="pattern-title">forwardRef + useImperativeHandle</h3>
           <p className="section-note">
             Expose a custom method from a child component to its parent.
           </p>
@@ -129,9 +124,7 @@ const ref = useRef<FancyInputRef>(null)
         </article>
 
         <article id="composition-polymorphic" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Polymorphic "as" prop
-          </h3>
+          <h3 className="pattern-title">Polymorphic "as" prop</h3>
           <p className="section-note">
             A component that can render as any HTML element while preserving
             valid HTML attributes for that element.

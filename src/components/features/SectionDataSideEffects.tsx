@@ -4,14 +4,10 @@ import { Gotcha } from '../ui/Gotcha'
 export function SectionDataSideEffects() {
   return (
     <section id="data-side-effects" className="scroll-mt-24 mb-16 docs-section">
-      <h2 className="section-title">
-        2. Data & Side Effects
-      </h2>
+      <h2 className="section-title">2. Data & Side Effects</h2>
       <div className="space-y-12">
         <article id="data-use-reducer" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            useReducer
-          </h3>
+          <h3 className="pattern-title">useReducer</h3>
           <p className="section-note">
             Manage complex state objects or multiple sub-values where the next
             state relies on the previous.
@@ -45,9 +41,7 @@ function Counter() {
         </article>
 
         <article id="data-use-context" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            useContext
-          </h3>
+          <h3 className="pattern-title">useContext</h3>
           <p className="section-note">
             Pass data through the component tree without prop-drilling.
           </p>
@@ -75,9 +69,7 @@ function Child() {
         </article>
 
         <article id="data-tanstack-query" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            TanStack Query
-          </h3>
+          <h3 className="pattern-title">TanStack Query</h3>
           <p className="section-note">
             The standard async state manager. Handles caching, background
             updates, and stale data.
@@ -141,9 +133,7 @@ renderCount.current += 1`}
         </article>
 
         <article id="data-use-memo-callback" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            useCallback & useMemo
-          </h3>
+          <h3 className="pattern-title">useCallback & useMemo</h3>
           <p className="section-note">
             Cache functions and derived values between renders. Use only when
             calculating is expensive or passing to `React.memo` components.
@@ -166,12 +156,8 @@ const handleSubmit = useCallback((data) => {
         </article>
 
         <article id="data-custom-hooks" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Custom Hooks
-          </h3>
-          <p className="section-note">
-            Extract and reuse stateful logic.
-          </p>
+          <h3 className="pattern-title">Custom Hooks</h3>
+          <p className="section-note">Extract and reuse stateful logic.</p>
           <CodeBlock
             code={`// useDebounce
 export function useDebounce<T>(value: T, delay: number): T {

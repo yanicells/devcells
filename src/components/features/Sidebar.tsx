@@ -1,10 +1,6 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import {
-  mainNavGroups,
-  miscSections,
-  sectionGroupMap,
-} from '../../lib/docsNav'
+import { mainNavGroups, miscSections, sectionGroupMap } from '../../lib/docsNav'
 
 const mainMap = sectionGroupMap(mainNavGroups)
 
@@ -189,7 +185,10 @@ export function Sidebar() {
                                 return (
                                   <a
                                     key={pattern.id}
-                                    href={hrefFor(location.pathname, pattern.id)}
+                                    href={hrefFor(
+                                      location.pathname,
+                                      pattern.id,
+                                    )}
                                     onClick={() => setIsOpen(false)}
                                     className={`block px-2 py-1 text-xs tracking-[0.08em] uppercase border-l-2 transition-colors ${
                                       isPatternActive

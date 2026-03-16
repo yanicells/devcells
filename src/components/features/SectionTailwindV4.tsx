@@ -47,15 +47,11 @@ function Box({
 export function SectionTailwindV4() {
   return (
     <section id="tailwind-v4" className="scroll-mt-24 mb-16 docs-section">
-      <h2 className="section-title">
-        6. Tailwind CSS v4
-      </h2>
+      <h2 className="section-title">6. Tailwind CSS v4</h2>
 
       <div className="space-y-12">
         <article id="tailwind-v4-changes" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            v3 → v4 Migration
-          </h3>
+          <h3 className="pattern-title">v3 → v4 Migration</h3>
           <p className="section-note">
             No more `tailwind.config.js`. Everything is configured via CSS.
           </p>
@@ -82,9 +78,7 @@ export function SectionTailwindV4() {
         </article>
 
         <article id="tailwind-theme-tokens" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Config & Tokens
-          </h3>
+          <h3 className="pattern-title">Config & Tokens</h3>
           <p className="section-note">
             The `cn()` utility for conditional classes & resolving conflicts
             using `tailwind-merge` + `clsx`.
@@ -99,7 +93,10 @@ export function cn(...inputs: ClassValue[]) {
             lang="tsx"
           />
 
-          <h4 id="tailwind-cn-cva" className="pattern-title mt-8 mb-2 scroll-mt-24">
+          <h4
+            id="tailwind-cn-cva"
+            className="pattern-title mt-8 mb-2 scroll-mt-24"
+          >
             class-variance-authority (cva)
           </h4>
           <CodeBlock
@@ -130,9 +127,7 @@ export function Button({ intent, size, className, ...props }: ButtonProps) {
         </article>
 
         <article id="tailwind-flexbox" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Layout — Flexbox
-          </h3>
+          <h3 className="pattern-title">Layout — Flexbox</h3>
           <DemoBlock
             classes="flex items-center justify-between"
             title="Horizontal Navbar"
@@ -215,9 +210,7 @@ export function Button({ intent, size, className, ...props }: ButtonProps) {
         </article>
 
         <article id="tailwind-grid" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Layout — CSS Grid
-          </h3>
+          <h3 className="pattern-title">Layout — CSS Grid</h3>
           <DemoBlock classes="grid grid-cols-12 gap-4" title="12-Column Grid">
             <div className="grid grid-cols-12 gap-2">
               <div className="col-span-8 bg-(--surface) border border-(--border) text-(--text-primary) text-center p-2 text-xs font-mono">
@@ -278,49 +271,53 @@ export function Button({ intent, size, className, ...props }: ButtonProps) {
         </article>
 
         <article id="tailwind-spacing-grid" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Spacing / Sizing Scale
-          </h3>
+          <h3 className="pattern-title">Spacing / Sizing Scale</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-4">
-            {[1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64].map((s) => (
-              <div key={s} className="flex flex-col items-center">
-                <div
-                  className="w-full bg-(--surface-raised) border border-(--border) overflow-hidden flex items-end justify-center pb-0"
-                  style={{ height: '120px' }}
-                >
+            {[1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64].map(
+              (s) => (
+                <div key={s} className="flex flex-col items-center">
                   <div
-                    className="bg-[#2a2a2a] w-1/2"
-                    style={{ height: `${s * 0.25}rem` }}
-                  ></div>
+                    className="w-full bg-(--surface-raised) border border-(--border) overflow-hidden flex items-end justify-center pb-0"
+                    style={{ height: '120px' }}
+                  >
+                    <div
+                      className="bg-[#2a2a2a] w-1/2"
+                      style={{ height: `${s * 0.25}rem` }}
+                    ></div>
+                  </div>
+                  <div className="mt-2 text-xs font-mono font-bold text-(--text-primary)">
+                    {s}
+                  </div>
+                  <div className="text-[10px] text-(--text-muted)">
+                    {s * 4}px / {s * 0.25}rem
+                  </div>
                 </div>
-                <div className="mt-2 text-xs font-mono font-bold text-(--text-primary)">{s}</div>
-                <div className="text-[10px] text-(--text-muted)">
-                  {s * 4}px / {s * 0.25}rem
-                </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         </article>
 
         <article id="tailwind-common-layouts" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Common Designs
-          </h3>
+          <h3 className="pattern-title">Common Designs</h3>
           <ul className="space-y-4">
             <li className="p-4 border border-(--border) bg-(--surface) flex flex-col gap-2">
-              <span className="font-bold text-sm text-(--text-primary)">Sticky header</span>
+              <span className="font-bold text-sm text-(--text-primary)">
+                Sticky header
+              </span>
               <code className="inline-code">
                 sticky top-0 z-50 bg-white border-b border-[#e5e5e5]
               </code>
             </li>
             <li className="p-4 border border-(--border) bg-(--surface) flex flex-col gap-2">
-              <span className="font-bold text-sm text-(--text-primary)">Centered page container</span>
-              <code className="inline-code">
-                max-w-4xl mx-auto px-4
-              </code>
+              <span className="font-bold text-sm text-(--text-primary)">
+                Centered page container
+              </span>
+              <code className="inline-code">max-w-4xl mx-auto px-4</code>
             </li>
             <li className="p-4 border border-(--border) bg-(--surface) flex flex-col gap-2">
-              <span className="font-bold text-sm text-(--text-primary)">Card</span>
+              <span className="font-bold text-sm text-(--text-primary)">
+                Card
+              </span>
               <code className="inline-code">
                 rounded-lg border border-[#e5e5e5] bg-white p-6
               </code>

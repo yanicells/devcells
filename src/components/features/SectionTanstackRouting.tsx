@@ -124,29 +124,20 @@ const projectTree: TreeNodeType[] = [
 export function SectionTanstackRouting() {
   return (
     <section id="tanstack-routing" className="scroll-mt-24 mb-16 docs-section">
-      <h2 className="section-title">
-        4. TanStack Start Routing
-      </h2>
+      <h2 className="section-title">4. TanStack Start Routing</h2>
 
       <div className="space-y-12">
         <article id="tanstack-file-structure" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            File-Based Routing
-          </h3>
+          <h3 className="pattern-title">File-Based Routing</h3>
           <p className="section-note">
             Routes are automatically generated from files inside the{' '}
-            <code className="inline-code">
-              app/routes/
-            </code>{' '}
-            directory.
+            <code className="inline-code">app/routes/</code> directory.
           </p>
           <FileTree data={appRoutesTree} />
         </article>
 
         <article className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Project Structure
-          </h3>
+          <h3 className="pattern-title">Project Structure</h3>
           <p className="section-note">
             Opinionated conventions outside of the routes directory.
           </p>
@@ -154,42 +145,30 @@ export function SectionTanstackRouting() {
 
           <ul className="mt-6 space-y-3 text-sm text-(--text-muted)">
             <li>
-              <strong className="text-(--text-primary)">server/queries/</strong> — Pure
-              async functions that call the DB directly. Only called inside
-              route{' '}
-              <code className="inline-code">
-                loader
-              </code>
-              s or{' '}
-              <code className="inline-code">
-                createServerFn
-              </code>
-              . Never imported in client components.
+              <strong className="text-(--text-primary)">server/queries/</strong>{' '}
+              — Pure async functions that call the DB directly. Only called
+              inside route <code className="inline-code">loader</code>s or{' '}
+              <code className="inline-code">createServerFn</code>. Never
+              imported in client components.
             </li>
             <li>
-              <strong className="text-(--text-primary)">server/actions/</strong> —{' '}
-              <code className="inline-code">
-                createServerFn()
-              </code>{' '}
-              mutations. Write operations only. Can be called from client
-              components.
+              <strong className="text-(--text-primary)">server/actions/</strong>{' '}
+              — <code className="inline-code">createServerFn()</code> mutations.
+              Write operations only. Can be called from client components.
             </li>
             <li>
-              <strong className="text-(--text-primary)">components/ui/</strong> — Zero data
-              fetching, zero server imports. Pure presentational primitives.
-              Accept all data via props.
+              <strong className="text-(--text-primary)">components/ui/</strong>{' '}
+              — Zero data fetching, zero server imports. Pure presentational
+              primitives. Accept all data via props.
             </li>
             <li>
-              <strong className="text-(--text-primary)">components/features/</strong> — Own
-              a domain concept. Can fetch data via{' '}
-              <code className="inline-code">
-                useQuery
-              </code>{' '}
-              on the client or receive loader data via{' '}
-              <code className="inline-code">
-                useLoaderData
-              </code>
-              .
+              <strong className="text-(--text-primary)">
+                components/features/
+              </strong>{' '}
+              — Own a domain concept. Can fetch data via{' '}
+              <code className="inline-code">useQuery</code> on the client or
+              receive loader data via{' '}
+              <code className="inline-code">useLoaderData</code>.
             </li>
           </ul>
         </article>
@@ -236,9 +215,7 @@ export function SectionTanstackRouting() {
           </div>
 
           <div id="tanstack-layouts-nested" className="scroll-mt-24">
-            <h4 className="pattern-title">
-              6. Layouts and nested routes
-            </h4>
+            <h4 className="pattern-title">6. Layouts and nested routes</h4>
             <CodeBlock
               code={`// app/routes/__root.tsx\nexport const Route = createRootRoute({\n  component: () => (\n    <div className="layout">\n      <Header />\n      <Outlet />\n    </div>\n  )\n})\n\n// app/routes/_layout.tsx\nexport const Route = createFileRoute('/_layout')({\n  component: () => <div className="sub-layout"><Outlet /></div>\n})`}
               lang="tsx"
@@ -246,9 +223,7 @@ export function SectionTanstackRouting() {
           </div>
 
           <div id="tanstack-pending-states" className="scroll-mt-24">
-            <h4 className="pattern-title">
-              7. Pending / Loading states
-            </h4>
+            <h4 className="pattern-title">7. Pending / Loading states</h4>
             <CodeBlock
               code={`export const Route = createFileRoute('/dashboard')({\n  pendingComponent: () => <Spinner />,\n  component: Dashboard,\n})\n\n// Or manually inside a component:\nconst { state } = useRouterState()\nconst isNavigating = state.location !== state.resolvedLocation`}
               lang="tsx"

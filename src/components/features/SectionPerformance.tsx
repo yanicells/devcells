@@ -119,15 +119,11 @@ function CachingFlow() {
 export function SectionPerformance() {
   return (
     <section id="performance" className="scroll-mt-24 mb-16 docs-section">
-      <h2 className="section-title">
-        7. Performance
-      </h2>
+      <h2 className="section-title">7. Performance</h2>
 
       <div className="space-y-12">
         <article id="perf-react-memo" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            React.memo
-          </h3>
+          <h3 className="pattern-title">React.memo</h3>
           <p className="section-note">
             Skip re-rendering when props don't change.
           </p>
@@ -141,20 +137,13 @@ export function SectionPerformance() {
           <Gotcha>
             If the component consumes a Context, it will still re-render when
             the context changes, bypassing{' '}
-            <code className="inline-code">
-              React.memo
-            </code>
-            .
+            <code className="inline-code">React.memo</code>.
           </Gotcha>
         </article>
 
         <article id="perf-lazy-suspense" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            lazy() + Suspense
-          </h3>
-          <p className="section-note">
-            Code splitting for heavy components.
-          </p>
+          <h3 className="pattern-title">lazy() + Suspense</h3>
+          <p className="section-note">Code splitting for heavy components.</p>
           <CodeBlock
             code={`import { lazy, Suspense } from 'react'
 
@@ -172,9 +161,7 @@ function Dashboard() {
         </article>
 
         <article id="perf-start-transition" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            startTransition
-          </h3>
+          <h3 className="pattern-title">startTransition</h3>
           <p className="section-note">
             Keep UI responsive by marking updates as non-urgent.
           </p>
@@ -196,9 +183,7 @@ function handleChange(e) {
         </article>
 
         <article id="perf-use-optimistic" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            useOptimistic
-          </h3>
+          <h3 className="pattern-title">useOptimistic</h3>
           <p className="section-note">
             Instant UI feedback before a server mutation completes.
           </p>
@@ -223,9 +208,7 @@ function LikeButton({ initialLikes, likeAction }) {
         </article>
 
         <article id="perf-use-deferred" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            useDeferredValue
-          </h3>
+          <h3 className="pattern-title">useDeferredValue</h3>
           <p className="section-note">
             Keep typing responsive while rendering an expensive filtered list.
           </p>
@@ -250,9 +233,7 @@ return (
         </article>
 
         <article id="perf-virtualization" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Virtualization
-          </h3>
+          <h3 className="pattern-title">Virtualization</h3>
           <p className="section-note">
             Render only the visible items in a long list.
           </p>
@@ -285,15 +266,11 @@ return (
         </article>
 
         <article id="perf-image-optimization" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            Image Optimization
-          </h3>
+          <h3 className="pattern-title">Image Optimization</h3>
           <p className="section-note">
             Vite / TanStack Start lacks built-in{' '}
-            <code className="inline-code">
-              next/image
-            </code>
-            . Use native lazy loading and explicit sizing to avoid CLS.
+            <code className="inline-code">next/image</code>. Use native lazy
+            loading and explicit sizing to avoid CLS.
           </p>
           <CodeBlock
             code={`<img 
@@ -309,37 +286,31 @@ return (
         </article>
 
         <article id="perf-caching-overview" className="scroll-mt-24">
-          <h3 className="pattern-title">
-            TanStack Start Caching Overview
-          </h3>
+          <h3 className="pattern-title">TanStack Start Caching Overview</h3>
           <p className="section-note">
             How prefetching, routing cache, and query caches interact.
           </p>
           <CachingFlow />
           <ul className="text-sm text-(--text-muted) list-disc pl-5 mt-4 space-y-2">
             <li>
-              <strong className="text-(--text-primary)">Loader Prefetch:</strong> Router
-              calls loader, which runs{' '}
-              <code className="inline-code">
-                ensureQueryData
-              </code>
-              .
+              <strong className="text-(--text-primary)">
+                Loader Prefetch:
+              </strong>{' '}
+              Router calls loader, which runs{' '}
+              <code className="inline-code">ensureQueryData</code>.
             </li>
             <li>
-              <strong className="text-(--text-primary)">Router Cache:</strong> Reuses loader
-              output for a configurable duration.
+              <strong className="text-(--text-primary)">Router Cache:</strong>{' '}
+              Reuses loader output for a configurable duration.
             </li>
             <li>
-              <strong className="text-(--text-primary)">Query Cache:</strong> React Query
-              holds data globally and deduplicates requests.{' '}
-              <code className="inline-code">
-                staleTime
-              </code>{' '}
-              controls refetches.
+              <strong className="text-(--text-primary)">Query Cache:</strong>{' '}
+              React Query holds data globally and deduplicates requests.{' '}
+              <code className="inline-code">staleTime</code> controls refetches.
             </li>
             <li>
-              <strong className="text-(--text-primary)">UI:</strong> Component hydrates
-              efficiently.
+              <strong className="text-(--text-primary)">UI:</strong> Component
+              hydrates efficiently.
             </li>
           </ul>
         </article>

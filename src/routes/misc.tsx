@@ -19,9 +19,7 @@ function Misc() {
       </header>
 
       <section id="misc-shell" className="mb-16 scroll-mt-24">
-        <h2 className="section-title">
-          Shell & File System
-        </h2>
+        <h2 className="section-title">Shell & File System</h2>
 
         <article className="scroll-mt-24 mb-12">
           <h3 className="pattern-title">
@@ -38,59 +36,28 @@ function Misc() {
         </article>
 
         <article id="misc-wsl" className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            WSL2 Tips for Web Dev
-          </h3>
+          <h3 className="pattern-title">WSL2 Tips for Web Dev</h3>
           <p className="section-note">
-            Keep your code in{' '}
-            <code className="inline-code">
-              ~/
-            </code>{' '}
-            (e.g.{' '}
-            <code className="inline-code">
-              ~/projects/
-            </code>
-            ), NEVER in{' '}
-            <code className="inline-code">
-              /mnt/c/
-            </code>
-            . Cross-OS file I/O is extremely slow and will destroy node_modules
+            Keep your code in <code className="inline-code">~/</code> (e.g.{' '}
+            <code className="inline-code">~/projects/</code>
+            ), NEVER in <code className="inline-code">/mnt/c/</code>. Cross-OS
+            file I/O is extremely slow and will destroy node_modules
             performance. Access Windows from WSL via{' '}
-            <code className="inline-code">
-              \\\\wsl$
-            </code>
-            .
+            <code className="inline-code">\\\\wsl$</code>.
           </p>
         </article>
       </section>
 
       <section id="misc-git" className="mb-16 scroll-mt-24">
-        <h2 className="section-title">
-          Git
-        </h2>
+        <h2 className="section-title">Git</h2>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            Interactive Rebase (Squash/Fixup)
-          </h3>
+          <h3 className="pattern-title">Interactive Rebase (Squash/Fixup)</h3>
           <p className="section-note">
-            Combine or edit the last{' '}
-            <code className="inline-code">
-              n
-            </code>{' '}
-            commits. Change{' '}
-            <code className="inline-code">
-              pick
-            </code>{' '}
-            to{' '}
-            <code className="inline-code">
-              squash
-            </code>{' '}
-            (or{' '}
-            <code className="inline-code">
-              s
-            </code>
-            ) in the editor.
+            Combine or edit the last <code className="inline-code">n</code>{' '}
+            commits. Change <code className="inline-code">pick</code> to{' '}
+            <code className="inline-code">squash</code> (or{' '}
+            <code className="inline-code">s</code>) in the editor.
           </p>
           <CodeBlock
             code={`git rebase -i HEAD~3
@@ -104,29 +71,18 @@ s 7g8h9i Add missing prop`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            Stash Pop vs. Apply
-          </h3>
+          <h3 className="pattern-title">Stash Pop vs. Apply</h3>
           <p className="section-note">
-            <code className="inline-code">
-              pop
-            </code>{' '}
-            applies the stash and removes it from the list.{' '}
-            <code className="inline-code">
-              apply
-            </code>{' '}
+            <code className="inline-code">pop</code> applies the stash and
+            removes it from the list. <code className="inline-code">apply</code>{' '}
             applies the stash but keeps it in the list (safer if you might need
             it again).
           </p>
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            Common Full-Stack .gitignore
-          </h3>
-          <p className="section-note">
-            The essentials for JS/TS projects.
-          </p>
+          <h3 className="pattern-title">Common Full-Stack .gitignore</h3>
+          <p className="section-note">The essentials for JS/TS projects.</p>
           <CodeBlock
             code={`node_modules
 .env
@@ -143,14 +99,10 @@ build
       </section>
 
       <section id="misc-pkg" className="mb-16 scroll-mt-24">
-        <h2 className="section-title">
-          Node & Package Managers
-        </h2>
+        <h2 className="section-title">Node & Package Managers</h2>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            npx vs pnpx vs bunx
-          </h3>
+          <h3 className="pattern-title">npx vs pnpx vs bunx</h3>
           <p className="section-note">
             Use the runner matching your package manager to execute binaries.
           </p>
@@ -168,9 +120,7 @@ bunx create-next-app@latest`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            Essential package.json Scripts
-          </h3>
+          <h3 className="pattern-title">Essential package.json Scripts</h3>
           <p className="section-note">Common CI/CD scripts.</p>
           <CodeBlock
             code={`"scripts": {
@@ -185,9 +135,7 @@ bunx create-next-app@latest`}
       </section>
 
       <section id="misc-typescript" className="mb-16 scroll-mt-24">
-        <h2 className="section-title">
-          TypeScript & Validation
-        </h2>
+        <h2 className="section-title">TypeScript & Validation</h2>
 
         <article className="scroll-mt-24 mb-12">
           <h3 className="pattern-title">
@@ -212,9 +160,7 @@ interface Admin extends User { level: number }`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            Zod Mastery
-          </h3>
+          <h3 className="pattern-title">Zod Mastery</h3>
           <p className="section-note">
             Schema definition, extraction, and safe parsing.
           </p>
@@ -240,22 +186,13 @@ const user = result.data`}
         </article>
 
         <article className="scroll-mt-24 mb-12">
-          <h3 className="pattern-title">
-            Environment Variable Patterns
-          </h3>
+          <h3 className="pattern-title">Environment Variable Patterns</h3>
           <p className="section-note">
-            <code className="inline-code">
-              .env
-            </code>{' '}
-            is the base.{' '}
-            <code className="inline-code">
-              .env.local
-            </code>{' '}
-            overrides it locally (and is gitignored).{' '}
-            <code className="inline-code">
-              .env.production
-            </code>{' '}
-            is used in the build pipeline.
+            <code className="inline-code">.env</code> is the base.{' '}
+            <code className="inline-code">.env.local</code> overrides it locally
+            (and is gitignored).{' '}
+            <code className="inline-code">.env.production</code> is used in the
+            build pipeline.
           </p>
         </article>
       </section>

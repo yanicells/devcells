@@ -178,7 +178,11 @@ export function flattenSearchEntries(): SearchEntry[] {
   }
 
   for (const item of miscSections) {
-    entries.push({ title: item.title, path: `/misc#${item.id}`, type: 'pattern' })
+    entries.push({
+      title: item.title,
+      path: `/misc#${item.id}`,
+      type: 'pattern',
+    })
   }
 
   entries.push({ title: 'Misc', path: '/misc', type: 'page' })

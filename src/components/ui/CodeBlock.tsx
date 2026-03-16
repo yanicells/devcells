@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { createHighlighter, type Highlighter } from 'shiki'
+import { createHighlighter } from 'shiki'
+import type { Highlighter } from 'shiki'
 import { cn } from '../../lib/utils'
 
 let highlighterPromise: Promise<Highlighter> | null = null

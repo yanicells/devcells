@@ -109,8 +109,8 @@ return (
             lang="tsx"
           />
           <Gotcha>
-            Using `array.length && <Component />` renders a `0` when empty. Use
-            `array.length &gt; 0 && <Component />` instead.
+            Using `array.length && &lt;Component /&gt;` renders a `0` when
+            empty. Use `array.length &gt; 0 && &lt;Component /&gt;` instead.
           </Gotcha>
         </article>
 

@@ -185,7 +185,9 @@ export function Sidebar() {
                     aria-expanded={open}
                   >
                     <span>{group.title}</span>
-                    <span className="text-xs text-(--text-muted)">{open ? '-' : '+'}</span>
+                    <span className="text-xs text-(--text-muted)">
+                      {open ? '-' : '+'}
+                    </span>
                   </button>
 
                   <div
@@ -276,7 +278,6 @@ export function Sidebar() {
               </div>
             </div>
           )}
-
         </nav>
 
         <div className="text-xs text-(--text-faint) border-t border-(--border-subtle) pt-3 mt-auto">

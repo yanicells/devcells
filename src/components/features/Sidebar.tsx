@@ -116,8 +116,12 @@ export function Sidebar() {
       >
         <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">
           <div className="font-bold text-lg tracking-tight flex items-center gap-2 text-(--text-primary)">
-            <div className="w-4 h-4 border border-(--accent)" />
-            Cheat Sheet
+            <img
+              src="/favicon.ico"
+              alt="devcells"
+              className="w-5 h-5 object-contain"
+            />
+            devcells
           </div>
           <button
             onClick={() => setIsOpen(false)}
@@ -140,6 +144,31 @@ export function Sidebar() {
         </div>
 
         <nav className="flex flex-col gap-1.5 flex-1">
+          <div className="mb-2 border-b border-(--border-subtle) pb-3">
+            <Link
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className={`block px-2 py-2 text-sm border-l-2 transition-colors ${
+                location.pathname === '/'
+                  ? 'border-(--accent) text-(--text-primary) font-medium'
+                  : 'border-transparent text-(--text-primary) hover:bg-(--surface-raised)'
+              }`}
+            >
+              Main Cheat Sheet
+            </Link>
+            <Link
+              to="/misc"
+              onClick={() => setIsOpen(false)}
+              className={`block px-2 py-2 text-sm border-l-2 transition-colors ${
+                location.pathname === '/misc'
+                  ? 'border-(--accent) text-(--text-primary) font-medium'
+                  : 'border-transparent text-(--text-primary) hover:bg-(--surface-raised)'
+              }`}
+            >
+              Misc
+            </Link>
+          </div>
+
           {!isMisc &&
             mainNavGroups.map((group) => {
               const open = expandedGroup === group.id
@@ -151,12 +180,12 @@ export function Sidebar() {
                 >
                   <button
                     type="button"
-                    className="w-full flex items-center justify-between px-2 py-2 text-xs tracking-[0.14em] uppercase text-(--text-muted) hover:bg-(--surface-raised) transition-colors"
+                    className="w-full flex items-center justify-between px-2 py-2 text-xs tracking-[0.14em] uppercase text-(--text-primary) hover:bg-(--surface-raised) transition-colors"
                     onClick={() => handleGroupToggle(group.id)}
                     aria-expanded={open}
                   >
                     <span>{group.title}</span>
-                    <span className="text-[10px]">{open ? '-' : '+'}</span>
+                    <span className="text-xs text-(--text-muted)">{open ? '-' : '+'}</span>
                   </button>
 
                   <div
@@ -171,8 +200,8 @@ export function Sidebar() {
                             onClick={() => setIsOpen(false)}
                             className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
                               isSectionActive
-                                ? 'border-(--accent) text-(--text-primary)'
-                                : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
+                                ? 'border-(--accent) text-(--text-primary) font-medium'
+                                : 'border-transparent text-(--text-primary) hover:bg-(--surface-raised)'
                             }`}
                           >
                             {section.title}
@@ -193,7 +222,7 @@ export function Sidebar() {
                                     className={`block px-2 py-1 text-xs tracking-[0.08em] uppercase border-l-2 transition-colors ${
                                       isPatternActive
                                         ? 'border-(--accent) text-(--text-primary)'
-                                        : 'border-transparent text-(--text-faint) hover:bg-(--surface-raised) hover:text-(--text-muted)'
+                                        : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
                                     }`}
                                   >
                                     {pattern.title}
@@ -214,7 +243,7 @@ export function Sidebar() {
             <div className="border-b border-(--border-subtle) pb-2">
               <button
                 type="button"
-                className="w-full flex items-center justify-between px-2 py-2 text-xs tracking-[0.14em] uppercase text-(--text-muted)"
+                className="w-full flex items-center justify-between px-2 py-2 text-xs tracking-[0.14em] uppercase text-(--text-primary)"
                 onClick={() => handleGroupToggle('misc')}
                 aria-expanded={expandedGroup === 'misc'}
               >
@@ -236,8 +265,8 @@ export function Sidebar() {
                       onClick={() => setIsOpen(false)}
                       className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
                         isActive
-                          ? 'border-(--accent) text-(--text-primary)'
-                          : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
+                          ? 'border-(--accent) text-(--text-primary) font-medium'
+                          : 'border-transparent text-(--text-primary) hover:bg-(--surface-raised)'
                       }`}
                     >
                       {item.title}
@@ -248,30 +277,6 @@ export function Sidebar() {
             </div>
           )}
 
-          <div className="mt-4 border-t border-(--border-subtle) pt-3">
-            <Link
-              to="/"
-              onClick={() => setIsOpen(false)}
-              className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
-                location.pathname === '/'
-                  ? 'border-(--accent) text-(--text-primary)'
-                  : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
-              }`}
-            >
-              Main Cheat Sheet
-            </Link>
-            <Link
-              to="/misc"
-              onClick={() => setIsOpen(false)}
-              className={`block px-2 py-1.5 text-sm border-l-2 transition-colors ${
-                location.pathname === '/misc'
-                  ? 'border-(--accent) text-(--text-primary)'
-                  : 'border-transparent text-(--text-muted) hover:bg-(--surface-raised) hover:text-(--text-primary)'
-              }`}
-            >
-              Misc
-            </Link>
-          </div>
         </nav>
 
         <div className="text-xs text-(--text-faint) border-t border-(--border-subtle) pt-3 mt-auto">

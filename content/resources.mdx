@@ -1,0 +1,617 @@
+# Resources
+
+The libraries, services, and links I keep reaching for. Grouped by what they do.
+
+## Frameworks & runtimes
+
+<LinkCard
+  href="https://nextjs.org"
+  title="Next.js"
+  description="React framework. App Router, Server Components, Server Actions. My default for full-stack apps."
+/>
+
+<LinkCard
+  href="https://tanstack.com/start"
+  title="TanStack Start"
+  description="Type-safe full-stack React framework. Vite-based. Alternative to Next.js."
+/>
+
+<LinkCard
+  href="https://remix.run"
+  title="Remix"
+  description="Web fundamentals first. Now part of React Router v7."
+/>
+
+<LinkCard
+  href="https://astro.build"
+  title="Astro"
+  description="Content sites. Ships zero JS by default. Great for blogs and marketing pages."
+/>
+
+<LinkCard
+  href="https://vitejs.dev"
+  title="Vite"
+  description="Frontend build tool. Fast dev server. The default for non-Next React apps."
+/>
+
+## Styling & UI
+
+<LinkCard
+  href="https://tailwindcss.com"
+  title="Tailwind CSS"
+  description="Utility-first CSS. v4 is current. The default for new projects."
+/>
+
+<LinkCard
+  href="https://ui.shadcn.com"
+  title="shadcn/ui"
+  description="Copy-paste component library built on Radix + Tailwind. Not a dependency — owns your code."
+/>
+
+<LinkCard
+  href="https://www.radix-ui.com"
+  title="Radix UI"
+  description="Unstyled, accessible component primitives. What shadcn is built on."
+/>
+
+<LinkCard
+  href="https://lucide.dev"
+  title="Lucide"
+  description="Icon set. Tree-shakeable, consistent style. The shadcn default."
+/>
+
+<LinkCard
+  href="https://www.framer.com/motion"
+  title="Framer Motion (Motion)"
+  description="Animations for React. Now just called 'Motion'. Use sparingly."
+/>
+
+<LinkCard
+  href="https://cva.style/docs"
+  title="class-variance-authority (cva)"
+  description="Variant API for component classes. Pairs with Tailwind."
+/>
+
+<LinkCard
+  href="https://github.com/dcastil/tailwind-merge"
+  title="tailwind-merge"
+  description="Smartly merges conflicting Tailwind classes. Inside the cn() helper."
+/>
+
+<LinkCard
+  href="https://sonner.emilkowal.ski"
+  title="Sonner"
+  description="Toast notifications. Tiny, accessible, the new standard."
+/>
+
+<LinkCard
+  href="https://magicui.design"
+  title="Magic UI"
+  description="Animated components built with Tailwind + Motion. Pairs with shadcn."
+/>
+
+<LinkCard
+  href="https://aceternity.com"
+  title="Aceternity UI"
+  description="Flashy hero/landing components. Good for marketing pages."
+/>
+
+## Forms & validation
+
+<LinkCard
+  href="https://react-hook-form.com"
+  title="React Hook Form"
+  description="Performant forms with minimal rerenders. The standard."
+/>
+
+<LinkCard
+  href="https://zod.dev"
+  title="Zod"
+  description="TypeScript-first schema validation. Use for forms, API inputs, env vars, LLM outputs."
+/>
+
+<LinkCard
+  href="https://valibot.dev"
+  title="Valibot"
+  description="Alternative to Zod. Smaller bundle. API is similar."
+/>
+
+## State management
+
+<LinkCard
+  href="https://zustand-demo.pmnd.rs"
+  title="Zustand"
+  description="Tiny state management. No provider. The default when Context isn't enough."
+/>
+
+<LinkCard
+  href="https://jotai.org"
+  title="Jotai"
+  description="Atomic state management. Different mental model from Zustand."
+/>
+
+<LinkCard
+  href="https://redux-toolkit.js.org"
+  title="Redux Toolkit"
+  description="Modern Redux. Use when you have genuinely complex state."
+/>
+
+## Data fetching & caching
+
+<LinkCard
+  href="https://tanstack.com/query"
+  title="TanStack Query"
+  description="Server state for client components. Caching, refetching, mutations."
+/>
+
+<LinkCard
+  href="https://swr.vercel.app"
+  title="SWR"
+  description="Vercel's data-fetching hook. Lighter than TanStack Query."
+/>
+
+## Database & ORM
+
+<LinkCard
+  href="https://orm.drizzle.team"
+  title="Drizzle ORM"
+  description="TypeScript ORM that feels like SQL. My default."
+/>
+
+<LinkCard
+  href="https://www.prisma.io"
+  title="Prisma"
+  description="Schema-first ORM with great DX. Heavier than Drizzle."
+/>
+
+<LinkCard
+  href="https://neon.tech"
+  title="Neon"
+  description="Serverless Postgres. Branching for preview deploys. Generous free tier."
+/>
+
+<LinkCard
+  href="https://supabase.com"
+  title="Supabase"
+  description="Postgres + Auth + Storage + Realtime. Open source Firebase alternative."
+/>
+
+<LinkCard
+  href="https://www.postgresql.org"
+  title="PostgreSQL"
+  description="The database. Always start here unless you have a specific reason."
+/>
+
+<LinkCard
+  href="https://upstash.com"
+  title="Upstash"
+  description="Serverless Redis and Kafka. HTTP-based, works on edge."
+/>
+
+## Auth
+
+<LinkCard
+  href="https://www.better-auth.com"
+  title="Better Auth"
+  description="Type-safe, framework-agnostic auth. My default."
+/>
+
+<LinkCard
+  href="https://authjs.dev"
+  title="Auth.js (NextAuth)"
+  description="The original. Widely used. More mature than Better Auth but less ergonomic."
+/>
+
+<LinkCard
+  href="https://clerk.com"
+  title="Clerk"
+  description="Hosted auth with pre-built UI. Fastest to ship, costs money at scale."
+/>
+
+<LinkCard
+  href="https://workos.com"
+  title="WorkOS"
+  description="Enterprise auth (SSO, SCIM). Use when selling B2B."
+/>
+
+## AI & LLMs
+
+<LinkCard
+  href="https://sdk.vercel.ai"
+  title="Vercel AI SDK"
+  description="Unified API across AI providers. Chat, streaming, structured output, tools."
+/>
+
+<LinkCard
+  href="https://platform.openai.com"
+  title="OpenAI"
+  description="GPT-4o, embeddings, Whisper. The benchmark."
+/>
+
+<LinkCard
+  href="https://docs.anthropic.com"
+  title="Anthropic Claude"
+  description="Claude Opus, Sonnet, Haiku. My pick for coding and long context."
+/>
+
+<LinkCard
+  href="https://ai.google.dev"
+  title="Google Gemini"
+  description="Cheap, fast, 1M+ token context. Great for high-volume tasks."
+/>
+
+<LinkCard
+  href="https://huggingface.co"
+  title="Hugging Face"
+  description="Open-source models, datasets, inference API."
+/>
+
+<LinkCard
+  href="https://js.langchain.com"
+  title="LangChain"
+  description="Orchestration for complex LLM workflows. Use when AI SDK isn't enough."
+/>
+
+<LinkCard
+  href="https://langchain-ai.github.io/langgraphjs"
+  title="LangGraph"
+  description="Stateful, multi-agent workflows. Built on LangChain."
+/>
+
+<LinkCard
+  href="https://www.llamaindex.ai"
+  title="LlamaIndex"
+  description="Data framework for LLM apps. Strong for RAG."
+/>
+
+<LinkCard
+  href="https://www.pinecone.io"
+  title="Pinecone"
+  description="Hosted vector database for RAG."
+/>
+
+<LinkCard
+  href="https://github.com/pgvector/pgvector"
+  title="pgvector"
+  description="Vector similarity search inside Postgres. Free, just an extension."
+/>
+
+<LinkCard
+  href="https://ollama.com"
+  title="Ollama"
+  description="Run LLMs locally. Llama, Mistral, Gemma."
+/>
+
+## Date & time
+
+<LinkCard
+  href="https://date-fns.org"
+  title="date-fns"
+  description="Modern, tree-shakeable date utilities. My default."
+/>
+
+<LinkCard
+  href="https://day.js.org"
+  title="Day.js"
+  description="2KB Moment.js alternative. Smaller than date-fns if you only need basics."
+/>
+
+<LinkCard
+  href="https://moment.github.io/luxon"
+  title="Luxon"
+  description="Powerful, immutable date library. Heavier."
+/>
+
+## File uploads & storage
+
+<LinkCard
+  href="https://uploadthing.com"
+  title="UploadThing"
+  description="The fastest way to add file uploads to Next.js. Free tier is generous."
+/>
+
+<LinkCard
+  href="https://cloudinary.com"
+  title="Cloudinary"
+  description="Image/video CDN with on-the-fly transformations."
+/>
+
+<LinkCard
+  href="https://aws.amazon.com/s3"
+  title="AWS S3"
+  description="Object storage. The cheapest at scale, but more setup."
+/>
+
+## Email
+
+<LinkCard
+  href="https://resend.com"
+  title="Resend"
+  description="Email API for developers. Made by the React Email team."
+/>
+
+<LinkCard
+  href="https://react.email"
+  title="React Email"
+  description="Build emails with React components. Pairs with Resend."
+/>
+
+<LinkCard
+  href="https://mailchimp.com"
+  title="Mailchimp"
+  description="Newsletters and marketing emails."
+/>
+
+<LinkCard
+  href="https://postmarkapp.com"
+  title="Postmark"
+  description="Transactional email with great deliverability."
+/>
+
+## Payments
+
+<LinkCard
+  href="https://stripe.com/docs"
+  title="Stripe"
+  description="The default for payments. Subscriptions, one-time, marketplaces."
+/>
+
+<LinkCard
+  href="https://lemonsqueezy.com"
+  title="Lemon Squeezy"
+  description="Merchant of record. Handles tax, easier for solo devs and indie SaaS."
+/>
+
+## Background jobs & queues
+
+<LinkCard
+  href="https://trigger.dev"
+  title="Trigger.dev"
+  description="Background jobs with great DX. Long-running tasks without timeouts."
+/>
+
+<LinkCard
+  href="https://www.inngest.com"
+  title="Inngest"
+  description="Serverless event-driven functions. Workflows, retries, fan-out."
+/>
+
+<LinkCard
+  href="https://upstash.com/qstash"
+  title="Upstash QStash"
+  description="HTTP-based message queue. Schedule and retry from any HTTP endpoint."
+/>
+
+## Realtime
+
+<LinkCard
+  href="https://supabase.com/realtime"
+  title="Supabase Realtime"
+  description="Postgres changes, presence, broadcast. Easy if already on Supabase."
+/>
+
+<LinkCard
+  href="https://pusher.com"
+  title="Pusher"
+  description="Hosted WebSockets. Easy pubsub."
+/>
+
+<LinkCard
+  href="https://ably.com"
+  title="Ably"
+  description="Realtime messaging. Strong reliability guarantees."
+/>
+
+## Hosting & deployment
+
+<LinkCard
+  href="https://vercel.com"
+  title="Vercel"
+  description="Best DX for Next.js. Free tier hits limits fast for hobby projects."
+/>
+
+<LinkCard
+  href="https://pages.cloudflare.com"
+  title="Cloudflare Pages"
+  description="Free for unlimited bandwidth. Where I migrated UniSort. Workers runtime."
+/>
+
+<LinkCard
+  href="https://www.netlify.com"
+  title="Netlify"
+  description="The OG static-first host. Good for non-Next sites."
+/>
+
+<LinkCard
+  href="https://railway.app"
+  title="Railway"
+  description="Deploy any container. Easy databases. Pay-per-use."
+/>
+
+<LinkCard
+  href="https://fly.io"
+  title="Fly.io"
+  description="Run containers near users. Good for Postgres + app colocated."
+/>
+
+## Analytics & monitoring
+
+<LinkCard
+  href="https://vercel.com/analytics"
+  title="Vercel Analytics"
+  description="Web vitals + visitor counts. Free tier on Vercel."
+/>
+
+<LinkCard
+  href="https://posthog.com"
+  title="PostHog"
+  description="Product analytics, feature flags, session replay. Open source."
+/>
+
+<LinkCard
+  href="https://plausible.io"
+  title="Plausible"
+  description="Privacy-friendly analytics. Lightweight."
+/>
+
+<LinkCard
+  href="https://sentry.io"
+  title="Sentry"
+  description="Error tracking. Catches what your users see, before they tell you."
+/>
+
+<LinkCard
+  href="https://axiom.co"
+  title="Axiom"
+  description="Logs. Great Vercel integration."
+/>
+
+## Testing
+
+<LinkCard
+  href="https://vitest.dev"
+  title="Vitest"
+  description="Unit testing. Vite-native, Jest-compatible API."
+/>
+
+<LinkCard
+  href="https://playwright.dev"
+  title="Playwright"
+  description="End-to-end browser testing. Microsoft, multi-browser."
+/>
+
+<LinkCard
+  href="https://testing-library.com/docs/react-testing-library/intro"
+  title="React Testing Library"
+  description="Test React components from the user's perspective."
+/>
+
+## DX & tooling
+
+<LinkCard
+  href="https://pnpm.io"
+  title="pnpm"
+  description="Faster, disk-efficient npm alternative. My default."
+/>
+
+<LinkCard
+  href="https://biomejs.dev"
+  title="Biome"
+  description="Fast linter + formatter. Single tool to replace ESLint + Prettier."
+/>
+
+<LinkCard
+  href="https://eslint.org"
+  title="ESLint"
+  description="The standard linter. Slower than Biome but huge plugin ecosystem."
+/>
+
+<LinkCard
+  href="https://prettier.io"
+  title="Prettier"
+  description="Code formatter. Pairs with ESLint."
+/>
+
+<LinkCard
+  href="https://www.t3.gg"
+  title="create-t3-app"
+  description="Opinionated Next.js stack: TS + tRPC + Prisma + Tailwind. Good reference."
+/>
+
+## Workflow & automation
+
+<LinkCard
+  href="https://n8n.io"
+  title="n8n"
+  description="Self-hostable workflow automation. Open-source Zapier."
+/>
+
+<LinkCard
+  href="https://zapier.com"
+  title="Zapier"
+  description="Connect apps without code. The classic."
+/>
+
+<LinkCard
+  href="https://make.com"
+  title="Make"
+  description="Visual workflow builder. More flexible than Zapier."
+/>
+
+## Documentation & learning
+
+<LinkCard
+  href="https://react.dev"
+  title="React docs"
+  description="The actual official docs. Excellent."
+/>
+
+<LinkCard
+  href="https://nextjs.org/docs"
+  title="Next.js docs"
+  description="Comprehensive. Read the App Router section first."
+/>
+
+<LinkCard
+  href="https://www.typescriptlang.org/docs"
+  title="TypeScript docs"
+  description="The Handbook. Re-read every few months."
+/>
+
+<LinkCard
+  href="https://roadmap.sh"
+  title="roadmap.sh"
+  description="Curated learning paths for every dev role."
+/>
+
+<LinkCard
+  href="https://frontendmasters.com"
+  title="Frontend Masters"
+  description="Where I take most of my courses. Quality > YouTube."
+/>
+
+<LinkCard
+  href="https://www.totaltypescript.com"
+  title="Total TypeScript"
+  description="Matt Pocock's TypeScript courses. Free tier is excellent."
+/>
+
+<LinkCard
+  href="https://2ality.com"
+  title="2ality (Dr. Axel)"
+  description="Deep dives into JS/TS internals."
+/>
+
+## Cheatsheet hubs
+
+<LinkCard
+  href="https://devhints.io"
+  title="DevHints"
+  description="Cheatsheets for everything. Bookmark."
+/>
+
+<LinkCard
+  href="https://overapi.com"
+  title="OverAPI"
+  description="Quick API references for many languages."
+/>
+
+## Inspiration / templates
+
+<LinkCard
+  href="https://vercel.com/templates"
+  title="Vercel Templates"
+  description="Production-ready starters."
+/>
+
+<LinkCard
+  href="https://shadcnui-templates.com"
+  title="shadcn/ui templates"
+  description="Pre-built layouts using shadcn."
+/>
+
+<LinkCard
+  href="https://21st.dev"
+  title="21st.dev"
+  description="Curated UI components and inspiration."
+/>

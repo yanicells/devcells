@@ -1,0 +1,416 @@
+# Tailwind
+
+## Spacing scale (the one thing to memorize)
+
+Tailwind's spacing scale is `0.25rem` per unit. So `p-4` = `1rem` = `16px`.
+
+```
+p-1 = 4px    p-4 = 16px   p-8  = 32px
+p-2 = 8px    p-5 = 20px   p-10 = 40px
+p-3 = 12px   p-6 = 24px   p-12 = 48px
+```
+
+Same scale for `m-`, `gap-`, `space-x-`, `w-`, `h-`, etc.
+
+## Flexbox basics
+
+<Preview>
+  <div className="flex gap-4">
+    <div className="w-12 h-12 bg-zinc-700 rounded" />
+    <div className="w-12 h-12 bg-zinc-700 rounded" />
+    <div className="w-12 h-12 bg-zinc-700 rounded" />
+  </div>
+</Preview>
+
+```tsx
+<div className="flex gap-4">
+  <div className="w-12 h-12 bg-zinc-700 rounded" />
+  <div className="w-12 h-12 bg-zinc-700 rounded" />
+  <div className="w-12 h-12 bg-zinc-700 rounded" />
+</div>
+```
+
+## Centering everything
+
+The pattern I use 100x a day. Center a thing horizontally and vertically.
+
+<Preview>
+  <div className="flex items-center justify-center h-32 bg-zinc-800 rounded-lg">
+    <span className="text-white">Centered</span>
+  </div>
+</Preview>
+
+```tsx
+<div className="flex items-center justify-center h-32 bg-zinc-800 rounded-lg">
+  <span className="text-white">Centered</span>
+</div>
+```
+
+## Justify and align
+
+`justify-*` controls the main axis. `items-*` controls the cross axis.
+
+<Preview>
+  <div className="space-y-2">
+    <div className="flex justify-between bg-zinc-800 p-2 rounded">
+      <div className="w-8 h-8 bg-zinc-500 rounded" />
+      <div className="w-8 h-8 bg-zinc-500 rounded" />
+      <div className="w-8 h-8 bg-zinc-500 rounded" />
+    </div>
+    <div className="flex justify-around bg-zinc-800 p-2 rounded">
+      <div className="w-8 h-8 bg-zinc-500 rounded" />
+      <div className="w-8 h-8 bg-zinc-500 rounded" />
+    </div>
+    <div className="flex justify-evenly bg-zinc-800 p-2 rounded">
+      <div className="w-8 h-8 bg-zinc-500 rounded" />
+      <div className="w-8 h-8 bg-zinc-500 rounded" />
+    </div>
+  </div>
+</Preview>
+
+```tsx
+<div className="flex justify-between">...</div>
+<div className="flex justify-around">...</div>
+<div className="flex justify-evenly">...</div>
+```
+
+## Flex-1 (the "take up the rest" trick)
+
+<Preview>
+  <div className="flex gap-2 p-2 bg-zinc-800 rounded">
+    <div className="w-12 h-12 bg-zinc-500 rounded" />
+    <div className="flex-1 h-12 bg-zinc-400 rounded" />
+    <div className="w-12 h-12 bg-zinc-500 rounded" />
+  </div>
+</Preview>
+
+```tsx
+<div className="flex gap-2">
+  <div className="w-12 h-12" />        {/* fixed */}
+  <div className="flex-1 h-12" />      {/* fills remaining space */}
+  <div className="w-12 h-12" />        {/* fixed */}
+</div>
+```
+
+## Flex direction
+
+<Preview>
+  <div className="flex flex-col gap-2 bg-zinc-800 p-2 rounded">
+    <div className="h-8 bg-zinc-500 rounded" />
+    <div className="h-8 bg-zinc-500 rounded" />
+    <div className="h-8 bg-zinc-500 rounded" />
+  </div>
+</Preview>
+
+```tsx
+<div className="flex flex-col gap-2">...</div>
+```
+
+## Flex wrap
+
+<Preview>
+  <div className="flex flex-wrap gap-2 bg-zinc-800 p-2 rounded max-w-xs">
+    {Array.from({ length: 8 }).map((_, i) => (
+      <div key={i} className="w-16 h-8 bg-zinc-500 rounded" />
+    ))}
+  </div>
+</Preview>
+
+```tsx
+<div className="flex flex-wrap gap-2 max-w-xs">
+  {items.map((i) => <div className="w-16 h-8" />)}
+</div>
+```
+
+## Grid basics
+
+12-column grid with gap. The Bootstrap mental model still applies.
+
+<Preview>
+  <div className="grid grid-cols-3 gap-2">
+    <div className="h-12 bg-zinc-700 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+  </div>
+</Preview>
+
+```tsx
+<div className="grid grid-cols-3 gap-2">
+  {/* 6 items, 3 columns, 2 rows */}
+</div>
+```
+
+## Grid with column spans
+
+<Preview>
+  <div className="grid grid-cols-4 gap-2">
+    <div className="col-span-2 h-12 bg-zinc-600 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+    <div className="col-span-3 h-12 bg-zinc-700 rounded" />
+    <div className="h-12 bg-zinc-700 rounded" />
+  </div>
+</Preview>
+
+```tsx
+<div className="grid grid-cols-4 gap-2">
+  <div className="col-span-2" />
+  <div />
+  <div />
+  <div className="col-span-3" />
+  <div />
+</div>
+```
+
+## Responsive grid (the dashboard pattern)
+
+1 column on mobile, 2 on tablet, 4 on desktop.
+
+<Preview>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+    {Array.from({ length: 4 }).map((_, i) => (
+      <div key={i} className="h-16 bg-zinc-700 rounded" />
+    ))}
+  </div>
+</Preview>
+
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <Card />
+  <Card />
+  <Card />
+  <Card />
+</div>
+```
+
+## `auto-fit` / `minmax` (responsive without breakpoints)
+
+When you don't want to think about breakpoints — fits as many columns as it can, each at least 200px wide.
+
+```tsx
+<div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))]">
+  {items.map((i) => <Card />)}
+</div>
+```
+
+## Sidebar layout (the classic)
+
+<Preview>
+  <div className="flex gap-2 h-32">
+    <aside className="w-32 bg-zinc-800 rounded p-2 text-white text-sm">Sidebar</aside>
+    <main className="flex-1 bg-zinc-700 rounded p-2 text-white text-sm">Content</main>
+  </div>
+</Preview>
+
+```tsx
+<div className="flex h-screen">
+  <aside className="w-64 bg-zinc-800">Sidebar</aside>
+  <main className="flex-1 overflow-y-auto">Content</main>
+</div>
+```
+
+## Sticky header
+
+```tsx
+<header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-zinc-900/80 border-b">
+  ...
+</header>
+```
+
+## Responsive prefixes
+
+Mobile-first — base classes apply to everything, prefixes scale up.
+
+```
+sm:   640px+
+md:   768px+
+lg:   1024px+
+xl:   1280px+
+2xl:  1536px+
+```
+
+```tsx
+<div className="text-sm md:text-base lg:text-lg">
+  Smaller on mobile, bigger on desktop
+</div>
+```
+
+## Dark mode
+
+Set up dark mode with `next-themes`. Then prefix any class with `dark:`.
+
+<Preview>
+  <div className="p-4 bg-white text-black dark:bg-zinc-900 dark:text-white rounded border">
+    Adapts to current theme
+  </div>
+</Preview>
+
+```tsx
+<div className="bg-white text-black dark:bg-zinc-900 dark:text-white">
+  Adapts to current theme
+</div>
+```
+
+## Hover, focus, active
+
+<Preview>
+  <button className="px-4 py-2 bg-zinc-700 text-white rounded hover:bg-zinc-600 active:bg-zinc-800 transition">
+    Hover me
+  </button>
+</Preview>
+
+```tsx
+<button className="bg-zinc-700 hover:bg-zinc-600 active:bg-zinc-800 transition">
+  Hover me
+</button>
+```
+
+## Group hover
+
+When hovering the parent should change a child.
+
+<Preview>
+  <div className="group p-4 bg-zinc-800 rounded cursor-pointer">
+    <p className="text-zinc-400 group-hover:text-white transition">
+      Hover the parent box
+    </p>
+  </div>
+</Preview>
+
+```tsx
+<div className="group p-4 bg-zinc-800">
+  <p className="text-zinc-400 group-hover:text-white transition">
+    Child reacts to parent hover
+  </p>
+</div>
+```
+
+## Peer state (sibling-driven styling)
+
+Style an element based on a sibling's state. Common for floating labels and custom checkboxes.
+
+```tsx
+<input id="email" type="email" className="peer" />
+<label
+  htmlFor="email"
+  className="text-zinc-500 peer-focus:text-blue-500 peer-invalid:text-red-500"
+>
+  Email
+</label>
+```
+
+## Conditional classes with `cn()`
+
+The shadcn helper. Combine `clsx` + `tailwind-merge` so classes compose without conflicts.
+
+```ts filename="lib/utils.ts"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+```tsx
+<button
+  className={cn(
+    "px-4 py-2 rounded",
+    variant === "primary" && "bg-black text-white",
+    variant === "secondary" && "bg-zinc-200",
+    disabled && "opacity-50 cursor-not-allowed",
+  )}
+/>
+```
+
+## `cva` for variants
+
+When a component has many variant combinations.
+
+```ts filename="components/Button.tsx"
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md font-medium transition",
+  {
+    variants: {
+      variant: {
+        primary: "bg-black text-white hover:bg-zinc-800",
+        secondary: "bg-zinc-200 hover:bg-zinc-300",
+        ghost: "hover:bg-zinc-100",
+      },
+      size: {
+        sm: "h-8 px-3 text-sm",
+        md: "h-10 px-4",
+        lg: "h-12 px-6 text-lg",
+      },
+    },
+    defaultVariants: { variant: "primary", size: "md" },
+  },
+);
+
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants>;
+
+export function Button({ className, variant, size, ...props }: ButtonProps) {
+  return (
+    <button
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
+}
+```
+
+## Container + max-width pattern
+
+For a centered article column.
+
+```tsx
+<div className="max-w-3xl mx-auto px-4">
+  <article>...</article>
+</div>
+```
+
+## Aspect ratio
+
+```tsx
+<div className="aspect-video bg-zinc-800">
+  <iframe src="..." className="w-full h-full" />
+</div>
+
+<div className="aspect-square w-32 bg-zinc-800" />
+```
+
+## Truncate text
+
+<Preview>
+  <p className="truncate w-48 text-white bg-zinc-800 p-2 rounded">
+    This is a really long line of text that will get cut off with an ellipsis
+  </p>
+</Preview>
+
+```tsx
+<p className="truncate w-48">Very long text that gets cut off...</p>
+
+{/* Multi-line */}
+<p className="line-clamp-2">Long text cut after 2 lines...</p>
+```
+
+## Arbitrary values
+
+When the design token doesn't have what you need.
+
+```tsx
+<div className="w-[347px] h-[12.5rem] bg-[#FF6B6B] grid-cols-[200px_1fr_auto]">
+  ...
+</div>
+```
+
+<Callout type="tip">
+Use sparingly. If you find yourself doing this a lot, your design system isn't matching the design.
+</Callout>

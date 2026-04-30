@@ -1,0 +1,297 @@
+# AI Integration
+
+Patterns first, providers second. Most apps need: text generation, streaming chat, structured output, RAG, and (sometimes) agents/tool calls. The provider is mostly interchangeable.
+
+## Vercel AI SDK (the easy default)
+
+```bash
+pnpm add ai @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/google
+```
+
+The SDK gives you a unified API across providers. Swap models without rewriting your code.
+
+## Pattern: simple text generation
+
+<Tabs defaultValue="vercel">
+  <Tab value="vercel" label="Vercel AI SDK">
+```ts
+import { generateText } from "ai";
+import { openai } from "@ai-sdk/openai";
+
+const { text } = await generateText({
+  model: openai("gpt-4o-mini"),
+  prompt: "Write a haiku about Postgres",
+});
+```
+  </Tab>
+  <Tab value="openai" label="OpenAI direct">
+```ts
+import OpenAI from "openai";
+const client = new OpenAI();
+
+const res = await client.chat.completions.create({
+  model: "gpt-4o-mini",
+  messages: [{ role: "user", content: "Write a haiku about Postgres" }],
+});
+const text = res.choices[0].message.content;
+```
+  </Tab>
+  <Tab value="claude" label="Anthropic direct">
+```ts
+import Anthropic from "@anthropic-ai/sdk";
+const client = new Anthropic();
+
+const res = await client.messages.create({
+  model: "claude-opus-4-7",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: "Write a haiku about Postgres" }],
+});
+const text = res.content[0].type === "text" ? res.content[0].text : "";
+```
+  </Tab>
+  <Tab value="gemini" label="Gemini direct">
+```ts
+import { GoogleGenerativeAI } from "@google/generative-ai";
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const result = await model.generateContent("Write a haiku about Postgres");
+const text = result.response.text();
+```
+  </Tab>
+</Tabs>
+
+## Pattern: streaming chat (the most common UI)
+
+The user sends a message, tokens stream back into the UI as they're generated.
+
+```ts filename="app/api/chat/route.ts"
+import { streamText } from "ai";
+import { openai } from "@ai-sdk/openai";
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+
+  const result = streamText({
+    model: openai("gpt-4o-mini"),
+    system: "You are a helpful assistant.",
+    messages,
+  });
+
+  return result.toDataStreamResponse();
+}
+```
+
+```tsx filename="app/chat/page.tsx"
+"use client";
+import { useChat } from "ai/react";
+
+export default function Chat() {
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({ api: "/api/chat" });
+
+  return (
+    <div>
+      {messages.map((m) => (
+        <div key={m.id}>
+          <strong>{m.role}:</strong> {m.content}
+        </div>
+      ))}
+
+      <form onSubmit={handleSubmit}>
+        <input value={input} onChange={handleInputChange} />
+        <button disabled={isLoading}>Send</button>
+      </form>
+    </div>
+  );
+}
+```
+
+## Pattern: structured output (JSON with a schema)
+
+When you need the LLM to return data your code can use directly. Pair with Zod.
+
+```ts
+import { generateObject } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { z } from "zod";
+
+const { object } = await generateObject({
+  model: openai("gpt-4o"),
+  schema: z.object({
+    title: z.string(),
+    tags: z.array(z.string()),
+    sentiment: z.enum(["positive", "neutral", "negative"]),
+  }),
+  prompt: `Analyze this review: "${review}"`,
+});
+
+// object is fully typed: { title: string; tags: string[]; sentiment: ... }
+```
+
+<Callout type="tip">
+This is the killer feature. No more parsing flaky JSON from text completions.
+</Callout>
+
+## Pattern: tool calling (let the model use functions)
+
+Give the model a set of tools. It decides when to call them.
+
+```ts
+import { streamText, tool } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { z } from "zod";
+
+const result = streamText({
+  model: openai("gpt-4o"),
+  messages,
+  tools: {
+    getWeather: tool({
+      description: "Get current weather for a city",
+      parameters: z.object({ city: z.string() }),
+      execute: async ({ city }) => {
+        const res = await fetch(`https://api.weather.com/${city}`);
+        return await res.json();
+      },
+    }),
+    searchPosts: tool({
+      description: "Search posts by keyword",
+      parameters: z.object({ query: z.string() }),
+      execute: async ({ query }) => {
+        return await db.query.posts.findMany({
+          where: like(posts.title, `%${query}%`),
+        });
+      },
+    }),
+  },
+  maxSteps: 5,  // how many times the model can loop with tool results
+});
+```
+
+## Pattern: RAG (retrieval-augmented generation)
+
+Find relevant docs, stuff them into the prompt, generate.
+
+The flow:
+1. **Index**: chunk your docs, generate embeddings, store in a vector DB
+2. **Retrieve**: embed the user's query, find similar chunks
+3. **Generate**: pass the retrieved chunks as context to the LLM
+
+```ts
+// 1. Indexing
+import { embed } from "ai";
+import { openai } from "@ai-sdk/openai";
+
+for (const chunk of chunks) {
+  const { embedding } = await embed({
+    model: openai.embedding("text-embedding-3-small"),
+    value: chunk.text,
+  });
+  await db.insert(documents).values({ text: chunk.text, embedding });
+}
+
+// 2. Retrieve
+const { embedding } = await embed({
+  model: openai.embedding("text-embedding-3-small"),
+  value: userQuery,
+});
+
+const relevant = await db
+  .select()
+  .from(documents)
+  .orderBy(sql`embedding <=> ${embedding}`)
+  .limit(5);
+
+// 3. Generate
+const { text } = await generateText({
+  model: openai("gpt-4o"),
+  system: `Answer based only on this context:\n${relevant.map((d) => d.text).join("\n\n")}`,
+  prompt: userQuery,
+});
+```
+
+For the vector DB: pgvector (Postgres extension), Pinecone, or Weaviate.
+
+## Pattern: agents
+
+An agent is just a loop of "model decides → calls tools → sees results → decides again" until it decides it's done. Use `maxSteps` in `streamText` for the simple case. For complex multi-step workflows, look at LangChain or LangGraph.
+
+## LangChain (when you need orchestration)
+
+For complex chains: multi-step reasoning, conditional flows, memory across sessions, multi-agent setups. Heavier than the AI SDK but more powerful.
+
+```bash
+pnpm add @langchain/core @langchain/openai
+```
+
+```ts
+import { ChatOpenAI } from "@langchain/openai";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+
+const model = new ChatOpenAI({ model: "gpt-4o-mini" });
+const prompt = ChatPromptTemplate.fromTemplate(
+  "Translate '{text}' to {language}",
+);
+
+const chain = prompt.pipe(model);
+const result = await chain.invoke({ text: "hello", language: "Japanese" });
+```
+
+<Callout type="note">
+For 90% of apps, the Vercel AI SDK is enough. Reach for LangChain when you have genuinely complex orchestration.
+</Callout>
+
+## Hugging Face (open-source models, embeddings)
+
+For self-hosted or open-source model access. Useful for embeddings on a budget, or running a smaller model for specific tasks.
+
+```bash
+pnpm add @huggingface/inference
+```
+
+```ts
+import { HfInference } from "@huggingface/inference";
+
+const hf = new HfInference(process.env.HF_TOKEN);
+
+const result = await hf.textGeneration({
+  model: "meta-llama/Llama-3.2-3B-Instruct",
+  inputs: "Write a haiku about Postgres",
+});
+```
+
+## Provider quick-pick
+
+| Use case | First choice |
+|----------|-------------|
+| General chat / fast iteration | Vercel AI SDK + OpenAI or Claude |
+| Need cheap, fast | Gemini Flash or GPT-4o-mini |
+| Need best quality | Claude Opus or GPT-4o |
+| Long context (1M tokens) | Gemini |
+| Structured output | Vercel AI SDK `generateObject` |
+| Self-host / open-source | Hugging Face + Llama |
+| Complex orchestration | LangChain |
+
+## Streaming structured output
+
+```ts
+import { streamObject } from "ai";
+
+const { partialObjectStream } = streamObject({
+  model: openai("gpt-4o"),
+  schema: z.object({ items: z.array(z.string()) }),
+  prompt: "List 5 things",
+});
+
+for await (const partial of partialObjectStream) {
+  console.log(partial); // updates as fields fill in
+}
+```
+
+## Cost / rate limit tips
+
+- Cache identical prompts (Redis, key by prompt hash)
+- Use the cheapest model that works (test with Flash/Mini first)
+- Set `max_tokens` aggressively
+- Stream when possible (better UX, can stop early)
+- For RAG, cache embeddings

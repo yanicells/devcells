@@ -1,0 +1,400 @@
+# React + TypeScript
+
+## Function components with typed props
+
+The default. Use a `type` (not `interface`) unless you need extension.
+
+```tsx filename="components/Button.tsx"
+type ButtonProps = {
+  label: string;
+  onClick: () => void;
+  variant?: "primary" | "secondary";
+};
+
+export function Button({ label, onClick, variant = "primary" }: ButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={variant === "primary" ? "bg-black text-white" : "bg-zinc-200"}
+    >
+      {label}
+    </button>
+  );
+}
+```
+
+<Callout type="note">
+Skip `React.FC`. It implicitly adds `children` and makes generic components annoying. Type props directly.
+</Callout>
+
+## Children typing
+
+```tsx
+type CardProps = {
+  title: string;
+  children: React.ReactNode;
+};
+
+export function Card({ title, children }: CardProps) {
+  return (
+    <div className="rounded-lg border p-4">
+      <h3>{title}</h3>
+      {children}
+    </div>
+  );
+}
+```
+
+`React.ReactNode` covers everything: strings, numbers, JSX, arrays, fragments, null. Use it 95% of the time.
+
+## Event handlers
+
+```tsx
+function Form() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e.currentTarget);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input onChange={handleChange} />
+      <button onClick={handleClick}>Go</button>
+    </form>
+  );
+}
+```
+
+## useState with types
+
+Inferred types are usually fine. Annotate when initial value is `null` or unions.
+
+```tsx
+const [count, setCount] = useState(0);                 // inferred: number
+const [user, setUser] = useState<User | null>(null);   // annotate
+const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+```
+
+## useState with objects (complex state)
+
+Always spread the previous state when updating one field. Forgetting this wipes the rest of the object.
+
+```tsx
+const [form, setForm] = useState({ name: "", email: "" });
+
+// good
+setForm((prev) => ({ ...prev, name: "Yani" }));
+
+// bad — wipes email
+setForm({ name: "Yani" });
+```
+
+## useEffect
+
+Three patterns to remember:
+
+```tsx
+// runs after every render — almost never what you want
+useEffect(() => {
+  console.log("rendered");
+});
+
+// runs once on mount
+useEffect(() => {
+  console.log("mounted");
+}, []);
+
+// runs on mount and whenever `query` changes
+useEffect(() => {
+  fetchResults(query);
+}, [query]);
+
+// with cleanup
+useEffect(() => {
+  const id = setInterval(tick, 1000);
+  return () => clearInterval(id);
+}, []);
+```
+
+<Callout type="gotcha">
+Effects run after the browser paints. If you're computing derived state from props, do it inline during render — don't `useEffect` + `useState` to "sync" them.
+</Callout>
+
+## Derived state (don't useEffect this)
+
+```tsx
+// bad
+const [fullName, setFullName] = useState("");
+useEffect(() => {
+  setFullName(`${first} ${last}`);
+}, [first, last]);
+
+// good
+const fullName = `${first} ${last}`;
+```
+
+## Refs
+
+```tsx
+const inputRef = useRef<HTMLInputElement>(null);
+
+useEffect(() => {
+  inputRef.current?.focus();
+}, []);
+
+return <input ref={inputRef} />;
+```
+
+## useMemo and useCallback
+
+Use sparingly. They cost too. Reach for them when:
+- A computation is genuinely expensive
+- You're passing a function to a memoized child and stability matters
+- You're putting an object/array in a dep array
+
+```tsx
+const filtered = useMemo(
+  () => items.filter((i) => i.name.includes(query)),
+  [items, query],
+);
+
+const handleSelect = useCallback((id: string) => {
+  setSelected(id);
+}, []);
+```
+
+<Callout type="tip">
+React 19's compiler memoizes automatically when the rules of React are followed. If you're on 19 + the compiler, you can mostly stop reaching for these manually.
+</Callout>
+
+## Conditional rendering
+
+```tsx
+{isLoading && <Spinner />}
+{user ? <Dashboard /> : <Login />}
+{items.length === 0 && <Empty />}
+```
+
+<Callout type="gotcha">
+`{count && <Thing />}` renders `0` to the DOM when count is 0. Use `count > 0 && <Thing />` or convert to boolean: `{!!count && <Thing />}`.
+</Callout>
+
+## Lists with keys
+
+Use a stable, unique ID. Index is fine only if the list never reorders, never filters, and items never get inserted in the middle (basically: a static list).
+
+```tsx
+{users.map((user) => (
+  <UserCard key={user.id} user={user} />
+))}
+```
+
+## Lifting state up
+
+When two siblings need the same state, move it to the closest common parent and pass it down with a setter.
+
+```tsx
+function Parent() {
+  const [filter, setFilter] = useState("");
+
+  return (
+    <>
+      <SearchBar value={filter} onChange={setFilter} />
+      <ResultsList filter={filter} />
+    </>
+  );
+}
+```
+
+## Custom hooks
+
+Extract any reusable stateful logic. Name must start with `use`.
+
+```tsx filename="hooks/useDebounce.ts"
+import { useState, useEffect } from "react";
+
+export function useDebounce<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const id = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(id);
+  }, [value, delay]);
+
+  return debounced;
+}
+```
+
+```tsx
+const debouncedQuery = useDebounce(query, 500);
+```
+
+## Context (when, and when not)
+
+Use Context for things that are truly app-wide and rarely change: theme, auth user, locale. Don't use it for state that changes frequently — every consumer rerenders.
+
+```tsx filename="contexts/ThemeContext.tsx"
+"use client";
+
+import { createContext, useContext, useState, ReactNode } from "react";
+
+type Theme = "light" | "dark";
+type ThemeContextValue = {
+  theme: Theme;
+  toggle: () => void;
+};
+
+const ThemeContext = createContext<ThemeContextValue | null>(null);
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>("dark");
+  const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggle }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be used inside ThemeProvider");
+  return ctx;
+}
+```
+
+<Callout type="gotcha">
+Every child wrapped by a Provider rerenders when the value changes. For frequently-updating state, use Zustand or split the context into smaller providers.
+</Callout>
+
+## Zustand (when Context isn't enough)
+
+Lighter than Redux, no provider needed, easier than Context for cross-component state.
+
+```ts filename="stores/useCounter.ts"
+import { create } from "zustand";
+
+type CounterStore = {
+  count: number;
+  increment: () => void;
+  reset: () => void;
+};
+
+export const useCounter = create<CounterStore>((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  reset: () => set({ count: 0 }),
+}));
+```
+
+```tsx
+// good — selector, only rerenders when count changes
+const count = useCounter((s) => s.count);
+
+// less optimal — rerenders on any store change
+const { count } = useCounter();
+```
+
+<Callout type="tip">
+Group stores by feature, not by data type. One store for cart, one for filters, one for auth — not one giant store.
+</Callout>
+
+## Forms with react-hook-form + Zod
+
+The combo I always reach for. Schema once, validates both runtime and TypeScript.
+
+```tsx filename="components/SignupForm.tsx"
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, "At least 8 characters"),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export function SignupForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
+  const onSubmit = async (data: FormData) => {
+    await fetch("/api/signup", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("email")} placeholder="Email" />
+      {errors.email && <p>{errors.email.message}</p>}
+
+      <input {...register("password")} type="password" />
+      {errors.password && <p>{errors.password.message}</p>}
+
+      <button disabled={isSubmitting}>Sign up</button>
+    </form>
+  );
+}
+```
+
+## Common utility types
+
+```ts
+// allow either string or React node
+type Label = string | React.ReactNode;
+
+// extract props from a component
+type ButtonProps = React.ComponentProps<"button">;
+type MyButtonProps = React.ComponentProps<typeof MyButton>;
+
+// children type
+type WithChildren = { children: React.ReactNode };
+
+// optional callback
+type OnChange = (value: string) => void;
+
+// extending HTML element props
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+};
+```
+
+## `as` prop / polymorphic components
+
+For components that can render as different elements.
+
+```tsx
+type BoxProps<T extends React.ElementType> = {
+  as?: T;
+  children: React.ReactNode;
+} & Omit<React.ComponentPropsWithoutRef<T>, "as" | "children">;
+
+export function Box<T extends React.ElementType = "div">({
+  as,
+  children,
+  ...rest
+}: BoxProps<T>) {
+  const Component = as || "div";
+  return <Component {...rest}>{children}</Component>;
+}
+
+// usage
+<Box as="section" className="p-4">Hello</Box>
+<Box as="a" href="/x">Link</Box>
+```

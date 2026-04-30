@@ -1,0 +1,163 @@
+# Auth (Better Auth)
+
+The auth library I use. Type-safe, framework-agnostic, batteries included.
+
+## Setup
+
+```bash
+pnpm add better-auth
+```
+
+```ts filename="lib/auth.ts"
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "@/lib/db";
+
+export const auth = betterAuth({
+  database: drizzleAdapter(db, { provider: "pg" }),
+  emailAndPassword: { enabled: true },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    },
+  },
+});
+```
+
+## Generate auth tables
+
+```bash
+pnpm dlx @better-auth/cli generate
+```
+
+This adds `user`, `session`, `account`, and `verification` tables to your schema.
+
+## Mount the route handler
+
+```ts filename="app/api/auth/[...all]/route.ts"
+import { auth } from "@/lib/auth";
+import { toNextJsHandler } from "better-auth/next-js";
+
+export const { GET, POST } = toNextJsHandler(auth);
+```
+
+## Client setup
+
+```ts filename="lib/auth-client.ts"
+import { createAuthClient } from "better-auth/react";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_APP_URL,
+});
+
+export const { signIn, signOut, signUp, useSession } = authClient;
+```
+
+## Sign in / sign up
+
+```tsx
+"use client";
+import { signIn, signUp } from "@/lib/auth-client";
+
+await signUp.email({
+  email: "yani@example.com",
+  password: "password123",
+  name: "Yani",
+});
+
+await signIn.email({
+  email: "yani@example.com",
+  password: "password123",
+});
+
+await signIn.social({ provider: "google" });
+```
+
+## Get session in server components
+
+```tsx filename="app/dashboard/page.tsx"
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export default async function Dashboard() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) redirect("/login");
+
+  return <div>Welcome {session.user.name}</div>;
+}
+```
+
+## Get session in client components
+
+```tsx
+"use client";
+import { useSession } from "@/lib/auth-client";
+
+function Profile() {
+  const { data: session, isPending } = useSession();
+  if (isPending) return <Spinner />;
+  if (!session) return <Login />;
+  return <p>{session.user.name}</p>;
+}
+```
+
+## Protect a route via middleware
+
+```ts filename="middleware.ts"
+import { NextRequest, NextResponse } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
+
+export async function middleware(req: NextRequest) {
+  const session = getSessionCookie(req);
+  if (!session) return NextResponse.redirect(new URL("/login", req.url));
+  return NextResponse.next();
+}
+
+export const config = { matcher: ["/dashboard/:path*"] };
+```
+
+## Sign out
+
+```tsx
+"use client";
+import { signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+
+function LogoutButton() {
+  const router = useRouter();
+  return (
+    <button
+      onClick={async () => {
+        await signOut();
+        router.push("/");
+        router.refresh();
+      }}
+    >
+      Log out
+    </button>
+  );
+}
+```
+
+## Role-based access (manual)
+
+Add a role column to your schema, then check in your DAL:
+
+```ts filename="lib/dal/admin.ts"
+import "server-only";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+
+export async function requireAdmin() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) throw new Error("Unauthorized");
+  if (session.user.role !== "admin") throw new Error("Forbidden");
+  return session;
+}
+```

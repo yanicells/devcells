@@ -1,0 +1,96 @@
+# TanStack Start
+
+Full-stack React framework. Alternative to Next.js. Built on Vite, uses TanStack Router for type-safe routing. Worth knowing if you want type-safe everything and don't want React Server Components.
+
+## Setup
+
+```bash
+pnpm create @tanstack/start@latest my-app
+cd my-app
+pnpm install
+pnpm dev
+```
+
+## File-based routing
+
+Routes live in `src/routes/`. File path = URL.
+
+```
+src/routes/
+  __root.tsx              # root route (like Next's root layout)
+  index.tsx               # /
+  about.tsx               # /about
+  posts.tsx               # /posts (layout)
+  posts.index.tsx         # /posts (index)
+  posts.$postId.tsx       # /posts/:postId
+```
+
+Naming uses dots for nesting and `$` for dynamic segments — opposite of Next's brackets.
+
+## Defining a route
+
+```tsx filename="src/routes/posts.$postId.tsx"
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/posts/$postId")({
+  loader: async ({ params }) => {
+    const post = await fetchPost(params.postId);
+    return { post };
+  },
+  component: PostPage,
+});
+
+function PostPage() {
+  const { post } = Route.useLoaderData();
+  return <article>{post.title}</article>;
+}
+```
+
+## Server functions
+
+Server-only logic, callable from anywhere. Like Next's Server Actions but more general.
+
+```tsx
+import { createServerFn } from "@tanstack/start";
+
+export const getPosts = createServerFn({ method: "GET" })
+  .handler(async () => {
+    return await db.query.posts.findMany();
+  });
+
+// in a component
+const posts = await getPosts();
+```
+
+## Type-safe links
+
+```tsx
+import { Link } from "@tanstack/react-router";
+
+<Link to="/posts/$postId" params={{ postId: "123" }}>
+  View Post
+</Link>
+```
+
+If you typo the route or forget a param, TypeScript yells. This is the main appeal.
+
+## Loaders + caching
+
+Loaders run before the route renders. Data is cached automatically.
+
+```tsx
+export const Route = createFileRoute("/posts")({
+  loader: () => fetchPosts(),
+  staleTime: 1000 * 60,   // 1 minute
+  component: PostsPage,
+});
+```
+
+## When to pick TanStack Start over Next.js
+
+- You want full type safety on routes and search params
+- You don't want React Server Components (TanStack uses traditional SPA + SSR)
+- You're already deep in TanStack Query + Router and want consistency
+- You're building something that doesn't need ISR or edge rendering
+
+Next.js is still the safer default for most projects. TanStack Start is newer, smaller community, fewer hosting integrations.

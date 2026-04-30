@@ -1,0 +1,322 @@
+# Patterns
+
+The "you'll do this in every project" stuff.
+
+## `cn()` for conditional Tailwind classes
+
+Already covered in the Tailwind section. The single most-reused utility in any project.
+
+## Optimistic UI
+
+Update the UI immediately, roll back on error.
+
+```tsx
+"use client";
+import { useOptimistic } from "react";
+
+function TodoList({ todos }: { todos: Todo[] }) {
+  const [optimistic, addOptimistic] = useOptimistic(
+    todos,
+    (state, newTodo: Todo) => [...state, newTodo],
+  );
+
+  const handleAdd = async (text: string) => {
+    addOptimistic({ id: "temp", text, done: false });
+    await createTodo(text); // server action
+  };
+
+  return <ul>{optimistic.map((t) => <li key={t.id}>{t.text}</li>)}</ul>;
+}
+```
+
+## Debouncing (search inputs)
+
+```tsx
+const [query, setQuery] = useState("");
+const debounced = useDebounce(query, 300);
+
+useEffect(() => {
+  if (!debounced) return;
+  fetchResults(debounced);
+}, [debounced]);
+```
+
+## Throttling
+
+When you want to fire at most once per N ms (scroll, resize handlers).
+
+```ts
+function throttle<T extends (...args: any[]) => any>(fn: T, ms: number) {
+  let last = 0;
+  return (...args: Parameters<T>) => {
+    const now = Date.now();
+    if (now - last >= ms) {
+      last = now;
+      fn(...args);
+    }
+  };
+}
+```
+
+## Loading states (the three you always need)
+
+```tsx
+{isLoading && <Skeleton />}
+{error && <ErrorMessage error={error} />}
+{!isLoading && !error && data && <Content data={data} />}
+
+// or with empty state
+{!isLoading && data?.length === 0 && <Empty />}
+```
+
+## Empty states matter
+
+Always design the empty state. Three things to include: icon/illustration, message, CTA.
+
+```tsx
+<div className="text-center py-12">
+  <Inbox className="mx-auto h-12 w-12 text-zinc-400" />
+  <h3 className="mt-2 font-semibold">No posts yet</h3>
+  <p className="text-sm text-zinc-500">Get started by creating your first post.</p>
+  <Button className="mt-4">Create post</Button>
+</div>
+```
+
+## Toast notifications
+
+Sonner is the de-facto choice now. Tiny, accessible, easy.
+
+```bash
+pnpm add sonner
+```
+
+```tsx
+import { toast } from "sonner";
+
+toast.success("Saved");
+toast.error("Something went wrong");
+toast("Generic message");
+
+toast.promise(saveUser(), {
+  loading: "Saving...",
+  success: "Saved!",
+  error: "Failed to save",
+});
+```
+
+## Modals (shadcn Dialog)
+
+```tsx
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
+<Dialog>
+  <DialogTrigger>Open</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Edit profile</DialogTitle>
+    </DialogHeader>
+    <ProfileForm />
+  </DialogContent>
+</Dialog>
+```
+
+## Confirmation dialog
+
+```tsx
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+
+<AlertDialog>
+  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+## Copy to clipboard
+
+```tsx
+"use client";
+import { useState } from "react";
+import { Check, Copy } from "lucide-react";
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <button onClick={handleCopy}>
+      {copied ? <Check size={16} /> : <Copy size={16} />}
+    </button>
+  );
+}
+```
+
+## Format dates (date-fns)
+
+```ts
+import { format, formatDistanceToNow, parseISO } from "date-fns";
+
+format(new Date(), "MMM d, yyyy");           // "Apr 23, 2026"
+format(new Date(), "h:mm a");                // "3:42 PM"
+formatDistanceToNow(date, { addSuffix: true }); // "2 hours ago"
+parseISO("2026-04-23T15:42:00Z");
+```
+
+## Image upload
+
+```tsx
+"use client";
+
+function FileUpload() {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const { url } = await res.json();
+  };
+
+  return <input type="file" accept="image/*" onChange={handleUpload} />;
+}
+```
+
+For storage: UploadThing (easiest), Cloudinary, S3, or Supabase Storage.
+
+## Pagination URL state
+
+Keep page state in the URL so refresh and sharing work.
+
+```tsx
+"use client";
+import { useSearchParams, useRouter } from "next/navigation";
+
+function Pagination() {
+  const params = useSearchParams();
+  const router = useRouter();
+  const page = Number(params.get("page") ?? 1);
+
+  const goTo = (n: number) => {
+    const next = new URLSearchParams(params);
+    next.set("page", String(n));
+    router.push(`?${next}`);
+  };
+
+  return (
+    <>
+      <button onClick={() => goTo(page - 1)}>Prev</button>
+      <span>{page}</span>
+      <button onClick={() => goTo(page + 1)}>Next</button>
+    </>
+  );
+}
+```
+
+## Skeleton loaders (better than spinners for content)
+
+```tsx
+import { Skeleton } from "@/components/ui/skeleton";
+
+<div className="space-y-2">
+  <Skeleton className="h-8 w-3/4" />
+  <Skeleton className="h-4 w-full" />
+  <Skeleton className="h-4 w-5/6" />
+</div>
+```
+
+## Infinite scroll (intersection observer)
+
+```tsx
+"use client";
+import { useEffect, useRef } from "react";
+
+function useInfiniteScroll(onIntersect: () => void) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) onIntersect();
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [onIntersect]);
+
+  return ref;
+}
+```
+
+## Local storage hook
+
+```ts
+function useLocalStorage<T>(key: string, initial: T) {
+  const [value, setValue] = useState<T>(() => {
+    if (typeof window === "undefined") return initial;
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : initial;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue] as const;
+}
+```
+
+## Keyboard shortcuts
+
+```tsx
+useEffect(() => {
+  const handler = (e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      setOpen(true);
+    }
+  };
+  window.addEventListener("keydown", handler);
+  return () => window.removeEventListener("keydown", handler);
+}, []);
+```
+
+## Prevent layout shift (CLS)
+
+- Always specify `width` and `height` on `<Image>`
+- Use skeleton loaders sized like the real content
+- For embedded videos/iframes, wrap in `aspect-video`
+- Reserve space for things that load async
+
+## Env variable validation (with Zod)
+
+```ts filename="lib/env.ts"
+import { z } from "zod";
+
+const envSchema = z.object({
+  DATABASE_URL: z.string().url(),
+  GEMINI_API_KEY: z.string().min(1),
+  NEXT_PUBLIC_APP_URL: z.string().url(),
+});
+
+export const env = envSchema.parse(process.env);
+```
+
+Now `env.DATABASE_URL` is fully typed and validated at startup.

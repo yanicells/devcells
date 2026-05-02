@@ -1,19 +1,24 @@
 import Link from "next/link";
-import { ArrowRight, Code2, Sparkles, Database, Layers, Boxes, Lock, Bot, Wrench, Library, Wind } from "lucide-react";
+import { ArrowRight, Sparkles, Library, Wrench, Boxes } from "lucide-react";
+import { BrandIcon } from "@/components/brand-icon";
+import { brandFor } from "@/lib/brands";
 import { navigation } from "@/lib/navigation";
 
-const ICONS: Record<string, typeof Code2> = {
+const FALLBACK_ICONS = {
   "getting-started": Sparkles,
-  react: Code2,
-  tailwind: Wind,
-  nextjs: Layers,
-  "tanstack-start": Boxes,
-  drizzle: Database,
   apis: Wrench,
-  auth: Lock,
-  ai: Bot,
-  patterns: Sparkles,
+  patterns: Boxes,
   resources: Library,
+} as const;
+
+const SECTION_BRAND: Record<string, string> = {
+  react: "react",
+  tailwind: "tailwind",
+  nextjs: "nextjs",
+  "tanstack-start": "tanstack",
+  drizzle: "drizzle",
+  auth: "better-auth",
+  ai: "anthropic",
 };
 
 export default function HomePage() {
@@ -61,15 +66,21 @@ export default function HomePage() {
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {navigation.map((s) => {
-            const Icon = ICONS[s.slug] ?? Sparkles;
+            const brand = SECTION_BRAND[s.slug] ?? brandFor(s.title);
+            const Fallback =
+              FALLBACK_ICONS[s.slug as keyof typeof FALLBACK_ICONS] ?? Sparkles;
             return (
               <Link
                 key={s.slug}
                 href={`/docs/${s.slug}`}
                 className="group relative flex flex-col rounded-lg border border-border bg-bg-subtle p-4 transition-colors hover:border-border-strong hover:bg-bg-muted"
               >
-                <div className="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-bg text-fg-muted group-hover:text-accent">
-                  <Icon size={14} />
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-md border border-border bg-bg text-fg-muted group-hover:border-border-strong">
+                  {brand ? (
+                    <BrandIcon name={brand} size={18} />
+                  ) : (
+                    <Fallback size={16} className="group-hover:text-accent" />
+                  )}
                 </div>
                 <div className="text-sm font-semibold text-fg">{s.title}</div>
                 <div className="mt-1 text-xs text-fg-subtle">

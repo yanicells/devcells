@@ -78,8 +78,9 @@ body {
   color: var(--accent-fg);
 }
 
-/* Focus rings */
-:where(a, button, [role="button"], input, textarea, select):focus-visible {
+/* Focus rings — only on actionable controls without their own visible focus state.
+   Form inputs typically style their own focus via the surrounding border. */
+:where(a, button, [role="button"]):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 2px;
@@ -252,7 +253,7 @@ body {
 
 /* Shiki / rehype-pretty-code */
 [data-rehype-pretty-code-figure] {
-  margin: 1.25rem 0;
+  margin: 0;
 }
 
 [data-rehype-pretty-code-figure] pre {
@@ -263,6 +264,11 @@ body {
   overflow-x: auto;
   font-size: 0.825rem;
   line-height: 1.6;
+}
+
+/* Make room for the language badge in the top-left of the pre */
+[data-rehype-pretty-code-figure] pre[data-language] {
+  padding-top: 2.1rem;
 }
 
 [data-rehype-pretty-code-figure] pre code {
@@ -276,35 +282,28 @@ body {
   counter-reset: line;
 }
 
-/* Theme switching for shiki via data attribute */
-html.dark [data-rehype-pretty-code-figure] code [data-light="github-light"] {
-  display: none;
-}
-
-html.light [data-rehype-pretty-code-figure] code [data-dark="github-dark-dimmed"] {
-  display: none;
-}
-
-[data-rehype-pretty-code-figure] code span {
+/* Shiki tokens: per-token color via inline css vars */
+[data-rehype-pretty-code-figure] pre code span {
   color: var(--shiki-light);
 }
-html.dark [data-rehype-pretty-code-figure] code span {
+html.dark [data-rehype-pretty-code-figure] pre code span {
   color: var(--shiki-dark);
 }
 
-[data-rehype-pretty-code-figure] code [data-line] {
+/* Per-line wrappers — only inside fenced blocks (pre), never inline code */
+[data-rehype-pretty-code-figure] pre code [data-line] {
   display: inline-block;
   width: 100%;
   padding: 0 0.25rem;
 }
 
-[data-rehype-pretty-code-figure] code [data-highlighted-line] {
+[data-rehype-pretty-code-figure] pre code [data-highlighted-line] {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   border-left: 2px solid var(--accent);
   padding-left: calc(0.25rem - 2px);
 }
 
-[data-rehype-pretty-code-figure] code [data-highlighted-chars] {
+[data-rehype-pretty-code-figure] pre code [data-highlighted-chars] {
   background: color-mix(in srgb, var(--accent) 18%, transparent);
   border-radius: 3px;
   padding: 0.05rem 0.2rem;
@@ -321,6 +320,7 @@ html.dark [data-rehype-pretty-code-figure] code span {
   color: var(--fg-muted);
 }
 
+[data-rehype-pretty-code-title] + div pre,
 [data-rehype-pretty-code-title] + pre {
   border-radius: 0 0 8px 8px;
   border-top: 0;

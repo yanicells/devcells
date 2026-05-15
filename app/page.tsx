@@ -25,10 +25,6 @@ export default function HomePage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-16 lg:py-24">
       <section className="mb-16 max-w-2xl">
-        <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-bg-subtle px-3 py-1 text-xs text-fg-muted">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
-          A personal reference, not a tutorial
-        </p>
         <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
           The patterns I keep <span className="text-accent">re-googling</span>,
           collected.

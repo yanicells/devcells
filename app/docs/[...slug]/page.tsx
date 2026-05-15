@@ -45,42 +45,34 @@ export default async function DocPage({ params }: Props) {
   return (
     <div className="flex">
       <main className="min-w-0 flex-1 px-2 py-10 lg:px-10">
-        <article className="prose mx-auto max-w-[720px]">
+        <article className="prose mx-auto max-w-180">
           <MDX />
         </article>
         <nav
           aria-label="Section navigation"
-          className="mx-auto mt-12 flex max-w-[720px] items-stretch justify-between gap-3 border-t border-border pt-6"
+          className="mx-auto mt-14 flex max-w-180 items-center justify-between gap-4 border-t border-border pt-6 text-sm"
         >
           {prev ? (
             <Link
               href={`/docs/${prev.slug}`}
-              className="group flex flex-1 flex-col rounded-md border border-border bg-bg-subtle p-3 transition-colors hover:bg-bg-muted"
+              className="group inline-flex items-center gap-1.5 text-fg-muted transition-colors hover:text-accent"
             >
-              <span className="flex items-center gap-1 text-[11px] uppercase tracking-wide text-fg-subtle">
-                <ChevronLeft size={12} /> Prev
-              </span>
-              <span className="mt-0.5 text-sm font-medium text-fg group-hover:text-accent">
-                {prev.title}
-              </span>
+              <ChevronLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+              <span className="font-medium">{prev.title}</span>
             </Link>
           ) : (
-            <div className="flex-1" />
+            <span />
           )}
           {next ? (
             <Link
               href={`/docs/${next.slug}`}
-              className="group flex flex-1 flex-col items-end rounded-md border border-border bg-bg-subtle p-3 transition-colors hover:bg-bg-muted"
+              className="group inline-flex items-center gap-1.5 text-fg-muted transition-colors hover:text-accent"
             >
-              <span className="flex items-center gap-1 text-[11px] uppercase tracking-wide text-fg-subtle">
-                Next <ChevronRight size={12} />
-              </span>
-              <span className="mt-0.5 text-sm font-medium text-fg group-hover:text-accent">
-                {next.title}
-              </span>
+              <span className="font-medium">{next.title}</span>
+              <ChevronRight size={14} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           ) : (
-            <div className="flex-1" />
+            <span />
           )}
         </nav>
       </main>

@@ -14,14 +14,11 @@ export function Header() {
         >
           <span className="inline-block h-2 w-2 rounded-sm bg-accent" />
           devcells
-          <span className="hidden font-sans text-xs font-normal text-fg-subtle sm:inline">
-            / yani&apos;s web dev docs
-          </span>
         </Link>
         <div className="ml-auto flex items-center gap-2">
           <CommandPaletteTrigger />
           <a
-            href="https://github.com"
+            href="https://github.com/yanicells/devcells"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden h-8 items-center rounded-md border border-border px-3 text-xs text-fg-muted hover:bg-bg-muted hover:text-fg sm:inline-flex"

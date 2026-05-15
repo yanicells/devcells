@@ -34,9 +34,9 @@ export function Pre({ className, children, raw: rawFromMdx, ...props }: PreProps
   }, [copied]);
 
   return (
-    <div className="group/code relative">
+    <div className="group/code relative my-5">
       {language && (
-        <span className="pointer-events-none absolute left-3 top-2 z-10 select-none font-mono text-[10px] uppercase tracking-wide text-fg-subtle/70">
+        <span className="pointer-events-none absolute left-3 top-2.5 z-10 select-none font-mono text-[10px] uppercase tracking-wider text-fg-subtle/70">
           {language}
         </span>
       )}
@@ -50,11 +50,7 @@ export function Pre({ className, children, raw: rawFromMdx, ...props }: PreProps
       >
         {copied ? <Check size={13} className="text-accent" /> : <Copy size={13} />}
       </button>
-      <pre
-        ref={ref}
-        className={cn(language ? "pt-7" : "", className)}
-        {...props}
-      >
+      <pre ref={ref} className={className} {...props}>
         {children}
       </pre>
     </div>

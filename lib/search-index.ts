@@ -10,12 +10,10 @@ export type SearchEntry = {
 export function buildSearchIndex(): SearchEntry[] {
   const out: SearchEntry[] = [];
   for (const section of navigation) {
-    out.push({
-      id: section.slug,
-      section: section.title,
-      title: section.title,
-      href: `/docs/${section.slug}`,
-    });
+    // The grouped palette uses the section title as a non-clickable header,
+    // and each sub-item below goes to a specific anchor. The section root link
+    // would just duplicate either the header or the first item, so it is
+    // intentionally omitted.
     for (const item of section.items) {
       out.push({
         id: `${section.slug}-${item.href}`,

@@ -80,7 +80,6 @@ const aliases: Record<string, string> = {
 // Brands that ship _light/_dark variants in /public/brand/.
 const themed = new Set([
   "react",
-  "nextjs",
   "anthropic",
   "openai",
   "vercel",

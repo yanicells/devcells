@@ -1,6 +1,6 @@
 # devcells
 
-Yani's personal web dev reference site. Static MDX docs over Next.js 16 (App Router) + Tailwind v4. Content lives in `content/*.mdx`, navigation in `lib/navigation.ts`, and everything renders to a fully prerendered static site.
+My personal web dev reference site. Static MDX docs over Next.js 16 (App Router) + Tailwind v4. Content lives in `content/*.mdx`, navigation in `lib/navigation.ts`, and everything renders to a fully prerendered static site.
 
 ## Run locally
 
